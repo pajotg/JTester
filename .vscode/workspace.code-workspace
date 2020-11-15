@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"C_Cpp.default.includePath": [
+			"${default}",
+			"${workspaceFolder}/utils/include",
+			"${workspaceFolder}/../libft",
+		],
+		"files.associations": {
+			"test_utils.h": "c"
+		},
+	}
+}
