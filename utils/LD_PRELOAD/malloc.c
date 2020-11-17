@@ -1,7 +1,7 @@
 #define _GNU_SOURCE
 
 #if !__linux__
-#define INTERSPOSE
+#define USE_INTERSPOSE
 #endif
 
 #include <stdio.h>
@@ -9,7 +9,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#ifdef INTERSPOSE
+#ifdef USE_INTERSPOSE
 #define PREFIX(_name) my_##_name
 #else
 #define PREFIX(_name) _name
@@ -108,7 +108,7 @@ void PREFIX(free)(void* pt)
 	return original_free(pt);
 }
 
-#ifdef INTERSPOSE
+#ifdef USE_INTERSPOSE
 
 extern void tu_malloc_reset();
 extern int tu_malloc_count();
