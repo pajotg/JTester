@@ -17,7 +17,7 @@ flags="-Wall -Wextra -Werror"
 LD_PRELOAD_LIB="$DIR/utils/LD_PRELOAD/LD_PRELOAD.so"
 LD_PRELOAD_NOP_LIB="$DIR/utils/LD_PRELOAD/NOP/libLD_PRELOAD_NOP.so"
 
-mkdir_result=$(mkdir "$DIR/tmp")
+mkdir_result=$(mkdir "$DIR/tmp" 2>/dev/null)
 test_file="$DIR/tmp/run_test.out"
 
 #make sure out utils is up to date
@@ -39,6 +39,16 @@ TEST_COLOR=$(printf "\e[1;33m")
 ERR_COLOR=$(printf "\e[1;35m")
 DEF_COLOR=$(printf "\e[0m")
 
+device=$(uname -s)
+case "${device}" in
+	Linux*);;
+	Darwin*);;
+	*)
+		echo "unknown device: \"${device}\" stopping tests!"
+		exit ;;
+esac
+
+
 get_exit_reason()
 {
 	if [[ $1 -eq 0 ]]; then
@@ -57,6 +67,7 @@ get_exit_reason()
 run_test ()
 {
 	test_name=$1
+
 	compile_out=$(cc $flags -o $test_file -I $utils_include -I $include $test_name $lib $utils_lib $LD_PRELOAD_NOP_LIB 2>&1)
 
 	#lib_base=$(basename $LD_PRELOAD_NOP_LIB)
@@ -81,7 +92,13 @@ run_test ()
 	i=0
 
 	while [ $i -lt 25 ]; do
-		ret=$(ulimit -t 5; LD_PRELOAD="$LD_PRELOAD $LD_PRELOAD_LIB" $test_file $i)
+		case "${device}" in
+			Linux*) ret=$(ulimit -t 5; LD_PRELOAD="$LD_PRELOAD $LD_PRELOAD_LIB" $test_file $i);;
+			Darwin*)ret=$(ulimit -t 5; DYLD_INSERT_LIBRARIES="$LD_PRELOAD_LIB" $test_file $i);;
+			*)
+				echo "Update run_test case"
+				return;;
+		esac
 		exit_code=$?
 		exit_reason=$(get_exit_reason $exit_code)
 		i=$(( $i+1 ))

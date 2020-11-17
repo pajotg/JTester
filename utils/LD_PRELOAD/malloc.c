@@ -72,7 +72,6 @@ void *malloc(size_t bytes)
 	if (bootstrap)
 		return bootstrap_malloc(bytes);
 
-	fprintf(stderr, "Yeet!");
 	malloc_count++;
 	if (malloc_count == malloc_stop_id) {
 		return (NULL);
