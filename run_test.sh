@@ -41,8 +41,8 @@ DEF_COLOR=$(printf "\e[0m")
 
 device=$(uname -s)
 case "${device}" in
-	Linux*);;
-	Darwin*);;
+	Linux*) echo "Linux detected!";;
+	Darwin*) echo "OSX detected!";;
 	*)
 		echo "unknown device: \"${device}\" stopping tests!"
 		exit ;;
