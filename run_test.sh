@@ -68,7 +68,13 @@ run_test ()
 {
 	test_name=$1
 
-	compile_out=$(cc $flags -o $test_file -I $utils_include -I $include $test_name $lib $utils_lib $LD_PRELOAD_NOP_LIB 2>&1)
+	case "${device}" in
+		Linux*) compile_out=$(cc $flags -o $test_file -I $utils_include -I $include $test_name $lib $utils_lib $LD_PRELOAD_NOP_LIB 2>&1);;
+		Darwin*)compile_out=$(cc $flags -o $test_file -I $utils_include -I $include $test_name $lib $utils_lib $LD_PRELOAD_NOP_LIB 2>&1);;
+		*)
+			echo "Update run_test case"
+			return;;
+	esac
 
 	#lib_base=$(basename $LD_PRELOAD_NOP_LIB)
 	#lib_base=${lib_base:3:$((${#lib_base} - 3 - 3))}
@@ -94,7 +100,7 @@ run_test ()
 	while [ $i -lt 25 ]; do
 		case "${device}" in
 			Linux*) ret=$(ulimit -t 5; LD_PRELOAD="$LD_PRELOAD $LD_PRELOAD_LIB" $test_file $i);;
-			Darwin*)ret=$(ulimit -t 5; DYLD_INSERT_LIBRARIES="$LD_PRELOAD_LIB" $test_file $i);;
+			Darwin*)ret=$(cd $(dirname $LD_PRELOAD_NOP_LIB); ulimit -t 5; DYLD_INSERT_LIBRARIES="$LD_PRELOAD_LIB" $test_file $i);; #DYLD_PRINT_LIBRARIES=1
 			*)
 				echo "Update run_test case"
 				return;;
