@@ -67,7 +67,7 @@ void *bootstrap_malloc(size_t bytes)
 	bootstrap_loc += bytes;
 	return pt;
 }
-void *malloc(size_t bytes)
+void *my_malloc(size_t bytes)
 {
 	if (bootstrap)
 		return bootstrap_malloc(bytes);
@@ -86,6 +86,7 @@ void *malloc(size_t bytes)
 	}
 	return pt;
 }
+
 void free(void* pt)
 {
 	if (bootstrap)
@@ -96,3 +97,18 @@ void free(void* pt)
 		free_non_null_count++;
 	return original_free(pt);
 }
+
+//#define DYLD_INTERPOSE(_replacement,_replacee) \
+//	__attribute__((used)) static struct{ const void* replacement; const void* replacee; } _interpose_##_replacee \
+//	__attribute__ ((section ("__DATA,__interpose"))) = { (const void*)(unsigned long)&_replacement, (const void*)(unsigned long)&_replacee };
+
+typedef struct	interspose_s
+{
+	void *new_func;
+	void *orig_func;
+}				interspose_t;
+
+__attribute__((used)) static const interspose_t interspose_functions[] __attribute__((section("__DATA, __interspose"))) =
+{
+	{ my_malloc, malloc }
+};
