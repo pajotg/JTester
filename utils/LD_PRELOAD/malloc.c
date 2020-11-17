@@ -1,14 +1,18 @@
 #define _GNU_SOURCE
 
+#if !__linux__
+#define INTERSPOSE
+#endif
+
 #include <stdio.h>
 #include <dlfcn.h>
 #include <stdbool.h>
 #include <stdlib.h>
 
-#if __linux__
-#define PREFIX(_name) _name
-#else
+#ifdef INTERSPOSE
 #define PREFIX(_name) my_##_name
+#else
+#define PREFIX(_name) _name
 #endif
 
 void *(*original_malloc)(size_t);
@@ -104,7 +108,15 @@ void PREFIX(free)(void* pt)
 	return original_free(pt);
 }
 
-#if !__linux__
+#ifdef INTERSPOSE
+
+extern void tu_malloc_reset();
+extern int tu_malloc_count();
+extern int tu_free_count();
+extern int tu_free_non_null_count();
+extern void tu_malloc_null_in(int num_mallocs);
+extern int tu_malloc_non_null_count();
+extern void tu_malloc_set_random(bool random);
 
 // 2 interspose options
 #if 1
