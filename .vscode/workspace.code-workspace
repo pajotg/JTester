@@ -11,7 +11,8 @@
 			"${workspaceFolder}/../libft",
 		],
 		"files.associations": {
-			"test_utils.h": "c"
+			"test_utils.h": "c",
+			"typeinfo": "c"
 		},
 	}
 }

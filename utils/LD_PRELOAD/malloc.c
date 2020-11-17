@@ -5,6 +5,12 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#if __linux__
+#define PREFIX(_name) _name
+#else
+#define PREFIX(_name) my_##_name
+#endif
+
 void *(*original_malloc)(size_t);
 void (*original_free)(void*);
 
@@ -20,33 +26,33 @@ static int free_non_null_count = 0;
 static int malloc_stop_id = -1;
 static bool malloc_random = false;
 
-void tu_malloc_reset()
+void PREFIX(tu_malloc_reset)()
 {
 	malloc_count = 0;
 	free_count = 0;
 }
-int tu_malloc_count()
+int  PREFIX(tu_malloc_count)()
 {
 	return malloc_count;
 }
-int tu_malloc_non_null_count()
+int  PREFIX(tu_malloc_non_null_count)()
 {
 	return malloc_non_null_count;
 }
-int tu_free_count()
+int  PREFIX(tu_free_count)()
 {
 	return free_count;
 }
-int tu_free_non_null_count()
+int  PREFIX(tu_free_non_null_count)()
 {
 	return free_non_null_count;
 }
 
-void tu_malloc_null_in(int num_mallocs)
+void PREFIX(tu_malloc_null_in)(int num_mallocs)
 {
 	malloc_stop_id = malloc_count + num_mallocs + 1;
 }
-void tu_malloc_set_random(bool random)
+void PREFIX(tu_malloc_set_random)(bool random)
 {
 	malloc_random = random;
 }
@@ -67,7 +73,7 @@ void *bootstrap_malloc(size_t bytes)
 	bootstrap_loc += bytes;
 	return pt;
 }
-void *my_malloc(size_t bytes)
+void *PREFIX(malloc)(size_t bytes)
 {
 	if (bootstrap)
 		return bootstrap_malloc(bytes);
@@ -87,7 +93,7 @@ void *my_malloc(size_t bytes)
 	return pt;
 }
 
-void free(void* pt)
+void PREFIX(free)(void* pt)
 {
 	if (bootstrap)
 		return ;
@@ -98,9 +104,27 @@ void free(void* pt)
 	return original_free(pt);
 }
 
-//#define DYLD_INTERPOSE(_replacement,_replacee) \
-//	__attribute__((used)) static struct{ const void* replacement; const void* replacee; } _interpose_##_replacee \
-//	__attribute__ ((section ("__DATA,__interpose"))) = { (const void*)(unsigned long)&_replacement, (const void*)(unsigned long)&_replacee };
+#if !__linux__
+
+// 2 interspose options
+#if 1
+#define DYLD_INTERPOSE(_replacement,_replacee) \
+	__attribute__((used)) static struct{ const void* replacement; const void* replacee; } _interpose_##_replacee \
+	__attribute__ ((section ("__DATA,__interpose"))) = { (const void*)(unsigned long)&_replacement, (const void*)(unsigned long)&_replacee };
+
+#define INTERSPOSE(func) DYLD_INTERPOSE(PREFIX(func),func)
+
+INTERSPOSE(tu_malloc_reset);
+INTERSPOSE(tu_malloc_count);
+INTERSPOSE(tu_malloc_non_null_count);
+INTERSPOSE(tu_free_count);
+INTERSPOSE(tu_free_non_null_count);
+INTERSPOSE(tu_malloc_null_in);
+INTERSPOSE(tu_malloc_set_random);
+INTERSPOSE(malloc);
+INTERSPOSE(free);
+
+#else
 
 typedef struct	interspose_s
 {
@@ -110,5 +134,16 @@ typedef struct	interspose_s
 
 __attribute__((used)) static const interspose_t interspose_functions[] __attribute__((section("__DATA, __interspose"))) =
 {
-	{ my_malloc, malloc }
+	{ PREFIX(tu_malloc_reset), 			tu_malloc_reset },
+	{ PREFIX(tu_malloc_count),			tu_malloc_count},
+	{ PREFIX(tu_malloc_non_null_count),	tu_malloc_non_null_count},
+	{ PREFIX(tu_free_count),			tu_free_count},
+	{ PREFIX(tu_free_non_null_count),	tu_free_non_null_count},
+	{ PREFIX(tu_malloc_null_in),		tu_malloc_null_in},
+	{ PREFIX(tu_malloc_set_random),		tu_malloc_set_random},
+	{ PREFIX(malloc),					malloc},
+	{ PREFIX(free),						free},
 };
+#endif
+
+#endif
