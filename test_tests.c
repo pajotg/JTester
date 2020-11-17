@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 	else if (tu_is_test(argv[1],"18"))
 		tu_warning_message("Hey there, this is a warning!");
 	else if (tu_is_test(argv[1],"19"))
-		malloc(25);
+		tu_nop_pt(malloc(25));
 	else if (tu_is_test(argv[1],"20"))
 	{
 		void* pt = NULL;

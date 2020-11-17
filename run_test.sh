@@ -15,9 +15,10 @@ utils_lib=$DIR"/utils/utils.a"
 utils_include=$DIR"/utils/include"
 flags="-Wall -Wextra -Werror"
 LD_PRELOAD_LIB="$DIR/utils/LD_PRELOAD/LD_PRELOAD.so"
-LD_PRELOAD_NOP_LIB="$DIR/utils/LD_PRELOAD/NOP/LD_PRELOAD_NOP.so"
+LD_PRELOAD_NOP_LIB="$DIR/utils/LD_PRELOAD/NOP/libLD_PRELOAD_NOP.so"
 
-test_file="$DIR/tmp/run_test"
+mkdir_result=$(mkdir "$DIR/tmp")
+test_file="$DIR/tmp/run_test.out"
 
 #make sure out utils is up to date
 make_result=$(cd $DIR/utils; make)
@@ -31,12 +32,12 @@ make_result=$(cd $DIR/utils/LD_PRELOAD/NOP; make)
 #echo utils_include $utils_include
 #echo flags $flags
 
-OK_COLOR="\e[1;32m"
-KO_COLOR="\e[1;31m"
-WARN_COLOR="\e[1;38;5;208m"
-TEST_COLOR="\e[1;33m"
-ERR_COLOR="\e[1;35m"
-DEF_COLOR="\e[0m"
+OK_COLOR=$(printf "\e[1;32m")
+KO_COLOR=$(printf "\e[1;31m")
+WARN_COLOR=$(printf "\e[1;38;5;208m")
+TEST_COLOR=$(printf "\e[1;33m")
+ERR_COLOR=$(printf "\e[1;35m")
+DEF_COLOR=$(printf "\e[0m")
 
 get_exit_reason()
 {
@@ -57,15 +58,23 @@ run_test ()
 {
 	test_name=$1
 	compile_out=$(cc $flags -o $test_file -I $utils_include -I $include $test_name $lib $utils_lib $LD_PRELOAD_NOP_LIB 2>&1)
+
+	#lib_base=$(basename $LD_PRELOAD_NOP_LIB)
+	#lib_base=${lib_base:3:$((${#lib_base} - 3 - 3))}
+	#lib_dir=$(dirname $LD_PRELOAD_NOP_LIB)/
+	#echo $lib_dir $lib_base
+	#compile_out=$(cc $flags -o $test_file -L$lib_dir -l$lib_base -I $utils_include -I $include $test_name $lib $utils_lib 2>&1)
+
 	exit_code=$?
 	base_name=$(basename $test_name)
-	base_name=${base_name:0:-2}
+	#base_name=${base_name:0:-2}
+	base_name=${base_name:0:$((${#base_name} - 2))}
 	if ((${#base_name} < 8)); then
 		base_name+='	'
 	fi
-	echo -ne "$TEST_COLOR$base_name	$DEF_COLOR"
+	echo -n "$TEST_COLOR$base_name	$DEF_COLOR"
 	if [ $exit_code -ne 0 ]; then
-		echo -e "$KO_COLOR[DID_NOT_COMPILE]$DEF_COLOR"
+		echo "$KO_COLOR[DID_NOT_COMPILE]$DEF_COLOR"
 		echo "$compile_out"
 		return
 	fi
@@ -84,11 +93,11 @@ run_test ()
 		#	x or X: can crash/should crash
 		# after test type result: - or +, in case of - we have -Reason or just -
 		#echo
-		#echo -n $ret
+		#echo -n "$ret"
 
 		# timeout/stop
 		if [[ $exit_code -eq 137 ]]; then
-			echo -ne "$KO_COLOR[TIMEOUT]$DEF_COLOR"
+			echo -n "$KO_COLOR[TIMEOUT]$DEF_COLOR"
 			continue
 		elif [[ "$ret" == "s"* ]]; then
 			break
@@ -97,18 +106,18 @@ run_test ()
 		# handle crashes
 		if [[ "$ret" != *"f" ]]; then
 			if [[ "$ret" == "X"* ]]; then
-				echo -ne "$OK_COLOR[$exit_reason]$DEF_COLOR"
+				echo -n "$OK_COLOR[$exit_reason]$DEF_COLOR"
 			elif [[ "$ret" == "x"* ]]; then
-				echo -ne "$OK_COLOR[$exit_reason]$DEF_COLOR"
+				echo -n "$OK_COLOR[$exit_reason]$DEF_COLOR"
 			else
-				echo -ne "$KO_COLOR[$exit_reason]$DEF_COLOR"
+				echo -n "$KO_COLOR[$exit_reason]$DEF_COLOR"
 			fi
 			continue
 		fi
 
 		# handle no crash
 		if [[ "$ret" == "X"* ]]; then
-			echo -ne "$KO_COLOR[NO CRASH]$DEF_COLOR"
+			echo -n "$KO_COLOR[NO CRASH]$DEF_COLOR"
 			continue
 		fi
 
@@ -123,7 +132,8 @@ run_test ()
 		message="";
 		len=${#ret}
 		if [[ $len -gt 3 ]]; then
-			message="${ret:1:-1}"
+			#message="${ret:1:-1}"
+			message="${ret:1:$((${#ret} - 1 - 1))}"
 		fi
 
 		# print out OK/KO with prot and message
@@ -131,43 +141,43 @@ run_test ()
 			# i dont like to print OK if it has a message or is protected
 			if [[ "$prot" ]]; then
 				if [[ "$message" ]]; then
-					echo -ne "$OK_COLOR[PROT: $message]$DEF_COLOR"
+					echo -n "$OK_COLOR[PROT: $message]$DEF_COLOR"
 				else
-					echo -ne "$OK_COLOR[PROT]$DEF_COLOR"
+					echo -n "$OK_COLOR[PROT]$DEF_COLOR"
 				fi
 			elif [[ "$message" ]]; then
-				echo -ne "$OK_COLOR[$message]$DEF_COLOR"
+				echo -n "$OK_COLOR[$message]$DEF_COLOR"
 			else
-				echo -ne "$OK_COLOR[OK]$DEF_COLOR"
+				echo -n "$OK_COLOR[OK]$DEF_COLOR"
 			fi
 		elif [[ "$ret" == "-"* ]]; then
 			# i dont like to print KO if it has a message or is protected
 			if [[ "$prot" ]]; then
 				if [[ "$message" ]]; then
-					echo -ne "$KO_COLOR[PROT: $message]$DEF_COLOR"
+					echo -n "$KO_COLOR[PROT: $message]$DEF_COLOR"
 				else
-					echo -ne "$KO_COLOR[PROT]$DEF_COLOR"
+					echo -n "$KO_COLOR[PROT]$DEF_COLOR"
 				fi
 			elif [[ "$message" ]]; then
-				echo -ne "$KO_COLOR[$message]$DEF_COLOR"
+				echo -n "$KO_COLOR[$message]$DEF_COLOR"
 			else
-				echo -ne "$KO_COLOR[KO]$DEF_COLOR"
+				echo -n "$KO_COLOR[KO]$DEF_COLOR"
 			fi
 		elif [[ "$ret" == "?"* ]]; then
 			# i dont like to print WARN if it has a message or is protected
 			if [[ "$prot" ]]; then
 				if [[ "$message" ]]; then
-					echo -ne "$WARN_COLOR[PROT: $message]$DEF_COLOR"
+					echo -n "$WARN_COLOR[PROT: $message]$DEF_COLOR"
 				else
-					echo -ne "$WARN_COLOR[PROT]$DEF_COLOR"
+					echo -n "$WARN_COLOR[PROT]$DEF_COLOR"
 				fi
 			elif [[ "$message" ]]; then
-				echo -ne "$WARN_COLOR[$message]$DEF_COLOR"
+				echo -n "$WARN_COLOR[$message]$DEF_COLOR"
 			else
-				echo -ne "$WARN_COLOR[WARN]$DEF_COLOR"
+				echo -n "$WARN_COLOR[WARN]$DEF_COLOR"
 			fi
 		else
-			echo -ne "$ERR_COLOR[$ret]$DEF_COLOR"
+			echo -n "$ERR_COLOR[$ret]$DEF_COLOR"
 		fi
 	done
 	rm $test_file
