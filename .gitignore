@@ -1,4 +1,5 @@
 *.so
+*.dylib
 *.a
 *.o
 *.out

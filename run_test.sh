@@ -14,16 +14,16 @@ tests_folder=$3
 utils_lib=$DIR"/utils/utils.a"
 utils_include=$DIR"/utils/include"
 flags="-Wall -Wextra -Werror"
-LD_PRELOAD_LIB="$DIR/utils/LD_PRELOAD/LD_PRELOAD.so"
-LD_PRELOAD_NOP_LIB="$DIR/utils/LD_PRELOAD/NOP/libLD_PRELOAD_NOP.so"
+LIB_PRELOAD="$DIR/utils/PRELOAD/PRELOAD"
+LIB_PRELOAD_NOP="$DIR/utils/PRELOAD/NOP/libPRELOAD_NOP.so"
 
 mkdir_result=$(mkdir "$DIR/tmp" 2>/dev/null)
 test_file="$DIR/tmp/run_test.out"
 
 #make sure out utils is up to date
 make_result=$(cd $DIR/utils; make)
-make_result=$(cd $DIR/utils/LD_PRELOAD; make)
-make_result=$(cd $DIR/utils/LD_PRELOAD/NOP; make)
+make_result=$(cd $DIR/utils/PRELOAD; make)
+make_result=$(cd $DIR/utils/PRELOAD/NOP; make)
 
 #echo lib $lib
 #echo include $include
@@ -41,8 +41,14 @@ DEF_COLOR=$(printf "\e[0m")
 
 device=$(uname -s)
 case "${device}" in
-	Linux*);;# echo "Linux detected!";;
-	Darwin*);;# echo "OSX detected!";;
+	Linux*)
+		LIB_PRELOAD="$LIB_PRELOAD.so"
+		#echo "Linux detected!"
+		;;
+	Darwin*)
+		LIB_PRELOAD="$LIB_PRELOAD.dylib"
+		# echo "OSX detected!"
+		;;
 	*)
 		echo "unknown device: \"${device}\" stopping tests!"
 		exit ;;
@@ -69,8 +75,8 @@ run_test ()
 	test_name=$1
 
 	case "${device}" in
-		Linux*) compile_out=$(cc $flags -o $test_file -I $utils_include -I $include $test_name $lib $utils_lib $LD_PRELOAD_NOP_LIB 2>&1);;
-		Darwin*)compile_out=$(cc $flags -o $test_file -I $utils_include -I $include $test_name $lib $utils_lib $LD_PRELOAD_NOP_LIB 2>&1);;
+		Linux*) compile_out=$(cc $flags -o $test_file -I $utils_include -I $include $test_name $lib $utils_lib $LIB_PRELOAD_NOP 2>&1);;
+		Darwin*)compile_out=$(cc $flags -o $test_file -I $utils_include -I $include $test_name $lib $utils_lib $LIB_PRELOAD_NOP 2>&1);;
 		*)
 			echo "Update run_test case"
 			return;;
@@ -99,8 +105,8 @@ run_test ()
 
 	while [ $i -lt 25 ]; do
 		case "${device}" in
-			Linux*) ret=$(ulimit -t 5; LD_PRELOAD="$LD_PRELOAD $LD_PRELOAD_LIB" $test_file $i);;
-			Darwin*)ret=$(cd $(dirname $LD_PRELOAD_NOP_LIB); ulimit -t 5; DYLD_INSERT_LIBRARIES="$LD_PRELOAD_LIB" $test_file $i);; #DYLD_PRINT_LIBRARIES=1
+			Linux*) ret=$(ulimit -t 5; LD_PRELOAD="$LD_PRELOAD $LIB_PRELOAD" $test_file $i);;
+			Darwin*)ret=$(cd $(dirname $LIB_PRELOAD_NOP); ulimit -t 5; DYLD_INSERT_LIBRARIES="$LIB_PRELOAD" $test_file $i);; #DYLD_PRINT_LIBRARIES=1
 			*)
 				echo "Update run_test case"
 				return;;
