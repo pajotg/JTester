@@ -13,7 +13,12 @@ endif
 
 .PHONY: $(NAME)
 $(NAME): $(SRC_FILES)
+ifdef LINUX
 	gcc -Wall -Wextra -fPIC -shared -o $(NAME) $(SRC_FILES) -ldl -nostartfiles
+else
+	cd NOP; $(MAKE)
+	gcc -Wall -Wextra -fPIC -shared -o $(NAME) $(SRC_FILES) -ldl -nostartfiles -LNOP -lPRELOAD_NOP
+endif
 
 
 #ifdef LINUX

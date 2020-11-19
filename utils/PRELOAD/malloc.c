@@ -1,7 +1,7 @@
 #define _GNU_SOURCE
 
 #if !__linux__
-#define USE_INTERSPOSE
+//#define USE_INTERSPOSE
 #endif
 
 #include <stdio.h>
@@ -70,6 +70,7 @@ static void Constructor()//(int argc, const char **argv)
 
 	original_malloc = dlsym(RTLD_NEXT, "malloc");
 	original_free = dlsym(RTLD_NEXT, "free");
+
 	bootstrap = false;
 }
 
@@ -79,6 +80,7 @@ void *bootstrap_malloc(size_t bytes)
 	bootstrap_loc += bytes;
 	return pt;
 }
+
 void *PREFIX(malloc)(size_t bytes)
 {
 	if (bootstrap)

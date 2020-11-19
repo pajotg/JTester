@@ -46,7 +46,8 @@ case "${device}" in
 		#echo "Linux detected!"
 		;;
 	Darwin*)
-		LIB_PRELOAD="$LIB_PRELOAD.dylib"
+		#LIB_PRELOAD="$LIB_PRELOAD.dylib"
+		LIB_PRELOAD="$LIB_PRELOAD.so"
 		# echo "OSX detected!"
 		;;
 	*)
