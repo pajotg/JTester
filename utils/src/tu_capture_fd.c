@@ -13,6 +13,9 @@ void tu_start_capture_fd(int fd, capture_data* ref)
 	ref->read_end = pipefd[0];
 	ref->write_end = pipefd[1];
 
+	fcntl(ref->read_end, F_SETFL, O_NONBLOCK);
+	fcntl(ref->write_end, F_SETFL, O_NONBLOCK);
+
 	// What used to be fd will now go to the pipe
 	dup2(ref->write_end, fd);
 }
