@@ -140,8 +140,8 @@ void free(void* pt)
 	__attribute__((used)) static struct{ const void* replacement; const void* replacee; } _interpose_##_replacee \
 	__attribute__ ((section ("__DATA,__interpose"))) = { (const void*)(unsigned long)&_replacement, (const void*)(unsigned long)&_replacee };
 
-DYLD_INTERPOSE(my_malloc, malloc);
-DYLD_INTERPOSE(my_free, free);
+DYLD_INTERPOSE(my_malloc, malloc)
+DYLD_INTERPOSE(my_free, free)
 
 #else
 

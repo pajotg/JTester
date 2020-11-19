@@ -16,9 +16,7 @@ int main(int argc, char *argv[])
 			if ((char)ft_tolower(i) != (char)tolower(i))
 			{
 				// tolower returns a unsigned char while most ft_tolower implementations dont, so cast to char to not care
-				char str[54];
-				snprintf(str, 54, "(%i = ft_tolower(%i)) != (%i = tolower(%i))", ft_tolower(i), i, tolower(i), i);
-				tu_ko_message_exit(str);
+				tu_ko_message_exit("(%i = ft_tolower(%i)) != (%i = tolower(%i))", ft_tolower(i), i, tolower(i), i);
 			}
 		tu_ok_exit();
 	}

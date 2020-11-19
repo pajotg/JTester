@@ -5,6 +5,7 @@
 # include <fcntl.h>
 # include <stdbool.h>
 # include <stdlib.h>
+# include <stdarg.h>
 
 #define OK_CHR "+"
 #define KO_CHR "-"
@@ -32,18 +33,24 @@ void tu_test_can_crash();
 
 bool* get_has_written_result();
 void tu_ok();
-void tu_ok_message(char *message);
+void tu_vok_message(char *message, va_list lst);
+void tu_ok_message(char *message, ...);
 void tu_ko();
-void tu_ko_message(char *message);
+void tu_vko_message(char *message, va_list lst);
+void tu_ko_message(char *message, ...);
 void tu_warning();
-void tu_warning_message(char *message);
+void tu_vwarning_message(char *message, va_list lst);
+void tu_warning_message(char *message, ...);
 
 void tu_ok_exit();
-void tu_ok_message_exit(char *message);
+void tu_vok_message_exit(char *message, va_list lst);
+void tu_ok_message_exit(char *message, ...);
 void tu_ko_exit();
-void tu_ko_message_exit(char *message);
+void tu_vko_message_exit(char *message, va_list lst);
+void tu_ko_message_exit(char *message, ...);
 void tu_warning_exit();
-void tu_warning_message_exit(char *message);
+void tu_vwarning_message_exit(char *message, va_list lst);
+void tu_warning_message_exit(char *message, ...);
 
 void tu_eq_msize(char* message, void* got, int expected, bool free_got);
 void tu_eq_int(char* message, int got, int expected);
