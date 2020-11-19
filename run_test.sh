@@ -106,7 +106,7 @@ run_test ()
 	while [ $i -lt 25 ]; do
 		case "${device}" in
 			Linux*) ret=$(ulimit -t 5; LD_PRELOAD="$LD_PRELOAD $LIB_PRELOAD" $test_file $i);;
-			Darwin*)ret=$(cd $(dirname $LIB_PRELOAD_NOP); ulimit -t 5; DYLD_INSERT_LIBRARIES="$LIB_PRELOAD" $test_file $i);; #DYLD_PRINT_LIBRARIES=1
+			Darwin*)ret=$(cd $(dirname $LIB_PRELOAD_NOP); ulimit -t 5; DYLD_FORCE_FLAT_NAMESPACE=1 DYLD_INSERT_LIBRARIES="$LIB_PRELOAD" $test_file $i);; #DYLD_PRINT_LIBRARIES=1
 			*)
 				echo "Update run_test case"
 				return;;

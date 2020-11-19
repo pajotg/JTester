@@ -61,7 +61,9 @@ void PREFIX(tu_malloc_set_random)(bool random)
 	malloc_random = random;
 }
 
-void _init()
+
+__attribute__((constructor))
+static void Constructor()//(int argc, const char **argv)
 {
 	bootstrap = true;
 	//fprintf(stderr, "Init!");
