@@ -1,7 +1,7 @@
 #define _GNU_SOURCE
 
 #if !__linux__
-//#define USE_INTERSPOSE
+#define USE_INTERSPOSE
 #endif
 
 #include <stdio.h>
@@ -9,12 +9,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#ifdef USE_INTERSPOSE
-#define PREFIX(_name) my_##_name
-#else
-#define PREFIX(_name) _name
-#endif
-
+#ifndef USE_INTERSPOSE
 void *(*original_malloc)(size_t);
 void (*original_free)(void*);
 
@@ -22,6 +17,7 @@ void (*original_free)(void*);
 static char bootstrap_data[1024*32]; // 32K ought to be enough
 static size_t bootstrap_loc = 0;
 static bool bootstrap = false;
+#endif
 
 static int malloc_count = 0;
 static int malloc_non_null_count = 0;
@@ -30,38 +26,39 @@ static int free_non_null_count = 0;
 static int malloc_stop_id = -1;
 static bool malloc_random = false;
 
-void PREFIX(tu_malloc_reset)()
+void tu_malloc_reset()
 {
 	malloc_count = 0;
 	free_count = 0;
 }
-int  PREFIX(tu_malloc_count)()
+int  tu_malloc_count()
 {
 	return malloc_count;
 }
-int  PREFIX(tu_malloc_non_null_count)()
+int  tu_malloc_non_null_count()
 {
 	return malloc_non_null_count;
 }
-int  PREFIX(tu_free_count)()
+int  tu_free_count()
 {
 	return free_count;
 }
-int  PREFIX(tu_free_non_null_count)()
+int  tu_free_non_null_count()
 {
 	return free_non_null_count;
 }
 
-void PREFIX(tu_malloc_null_in)(int num_mallocs)
+void tu_malloc_null_in(int num_mallocs)
 {
 	malloc_stop_id = malloc_count + num_mallocs + 1;
 }
-void PREFIX(tu_malloc_set_random)(bool random)
+void tu_malloc_set_random(bool random)
 {
 	malloc_random = random;
 }
 
 
+#ifndef USE_INTERSPOSE
 __attribute__((constructor))
 static void Constructor()//(int argc, const char **argv)
 {
@@ -74,23 +71,35 @@ static void Constructor()//(int argc, const char **argv)
 	bootstrap = false;
 }
 
-void *bootstrap_malloc(size_t bytes)
+void* bootstrap_malloc(size_t bytes)
 {
 	char* pt = &bootstrap_data[bootstrap_loc];
 	bootstrap_loc += bytes;
 	return pt;
 }
+#endif
 
-void *PREFIX(malloc)(size_t bytes)
+#ifdef USE_INTERSPOSE
+void* my_malloc(size_t bytes)
+#else
+void* malloc(size_t bytes)
+#endif
 {
+	#ifndef USE_INTERSPOSE
 	if (bootstrap)
 		return bootstrap_malloc(bytes);
+	#endif
 
 	malloc_count++;
 	if (malloc_count == malloc_stop_id) {
 		return (NULL);
 	}
+
+	#ifdef USE_INTERSPOSE
+	void* pt = malloc(bytes);
+	#else
 	void* pt = original_malloc(bytes);
+	#endif
 	if (pt)
 	{
 		malloc_non_null_count++;
@@ -101,26 +110,29 @@ void *PREFIX(malloc)(size_t bytes)
 	return pt;
 }
 
-void PREFIX(free)(void* pt)
+#ifdef USE_INTERSPOSE
+void my_free(void* pt)
+#else
+void free(void* pt)
+#endif
 {
+	#ifndef USE_INTERSPOSE
 	if (bootstrap)
 		return ;
+	#endif
 
 	free_count++;
 	if (pt != NULL)	// Freeing a null pointer does nothing, dont count towards the free count
 		free_non_null_count++;
-	return original_free(pt);
+
+	#ifdef USE_INTERSPOSE
+	free(pt);
+	#else
+	original_free(pt);
+	#endif
 }
 
 #ifdef USE_INTERSPOSE
-
-extern void tu_malloc_reset();
-extern int tu_malloc_count();
-extern int tu_free_count();
-extern int tu_free_non_null_count();
-extern void tu_malloc_null_in(int num_mallocs);
-extern int tu_malloc_non_null_count();
-extern void tu_malloc_set_random(bool random);
 
 // 2 interspose options
 #if 1
@@ -128,17 +140,8 @@ extern void tu_malloc_set_random(bool random);
 	__attribute__((used)) static struct{ const void* replacement; const void* replacee; } _interpose_##_replacee \
 	__attribute__ ((section ("__DATA,__interpose"))) = { (const void*)(unsigned long)&_replacement, (const void*)(unsigned long)&_replacee };
 
-#define INTERSPOSE(func) DYLD_INTERPOSE(PREFIX(func),func)
-
-INTERSPOSE(tu_malloc_reset);
-INTERSPOSE(tu_malloc_count);
-INTERSPOSE(tu_malloc_non_null_count);
-INTERSPOSE(tu_free_count);
-INTERSPOSE(tu_free_non_null_count);
-INTERSPOSE(tu_malloc_null_in);
-INTERSPOSE(tu_malloc_set_random);
-INTERSPOSE(malloc);
-INTERSPOSE(free);
+DYLD_INTERPOSE(my_malloc, malloc);
+DYLD_INTERPOSE(my_free, free);
 
 #else
 
