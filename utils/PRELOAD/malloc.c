@@ -29,7 +29,9 @@ static bool malloc_random = false;
 void tu_malloc_reset()
 {
 	malloc_count = 0;
+	malloc_non_null_count = 0;
 	free_count = 0;
+	free_non_null_count = 0;
 }
 int  tu_malloc_count()
 {
