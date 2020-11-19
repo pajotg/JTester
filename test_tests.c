@@ -5,11 +5,8 @@
 
 int main(int argc, char *argv[])
 {
-	if (argc != 2)
-	{
-		write(STDOUT_FILENO, "argc != 2", 9);
-		return (1);
-	}
+	tu_test_init(argc, argv);
+
 	if (tu_is_test(argv[1],"0"))
 		tu_ko_message_exit("this, ok, ko, no crash, good SEG, bad SEG, bad SIGKILL, wierd sig, can crash, can crash seg, can crash KO, can crash KO message, OK message, can crash OK message, should crash OK message (wat?), malloc tests, warnings, leaks detected, free(NULL)");
 	if (tu_is_test(argv[1],"1"))
@@ -62,7 +59,6 @@ int main(int argc, char *argv[])
 	}
 	else if (tu_is_test(argv[1],"15"))
 	{
-		tu_malloc_reset();
 		if (tu_malloc_count() != 0 || tu_free_count() != 0)
 			tu_ko_message_exit("Failed to reset malloc/free count!");
 		free(malloc(25));
@@ -71,7 +67,6 @@ int main(int argc, char *argv[])
 	}
 	else if (tu_is_test(argv[1],"16"))
 	{
-		tu_malloc_reset();
 		tu_malloc_null_in(1);	// This took roughly 5 hours to get working, wow
 		void* a = malloc(25);	// 0th call
 		void* b = malloc(25);	// 1st call	(returns null)

@@ -22,12 +22,7 @@ void do_test(char* input, char split, char** expected, char* message, char* msiz
 
 int main(int argc, char *argv[])
 {
-	if (argc != 2)
-	{
-		write(STDOUT_FILENO, "argc != 2", 9);
-		return (1);
-	}
-
+	tu_test_init(argc, argv);
 	if (tu_is_test(argv[1],"0"))
 	{
 		char* Expected[6] = { "Breaking", "ft_split", "since", "1981", NULL };

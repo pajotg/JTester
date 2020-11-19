@@ -5,11 +5,7 @@
 
 int main(int argc, char *argv[])
 {
-	if (argc != 2)
-	{
-		write(STDOUT_FILENO, "argc != 2", 9);
-		return (1);
-	}
+	tu_test_init(argc, argv);
 	if (tu_is_test(argv[1],"0"))
 	{
 		tu_eq_str_msize("Your strdup returned the wrong string!", "Your strdup allocated the wrong ammount, what?", ft_strdup("Hello world!"), "Hello world!", true, false);

@@ -23,6 +23,7 @@ typedef struct s_capture_data
 	int write_end;
 } capture_data;
 
+void tu_test_init(int argc, char *argv[]);
 void tu_test_stop();
 void tu_test_finish();
 

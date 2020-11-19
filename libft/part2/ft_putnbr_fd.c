@@ -22,12 +22,7 @@ void do_test(int value, char* correct, char* message_num_chars, char* message_st
 
 int main(int argc, char *argv[])
 {
-	if (argc != 2)
-	{
-		write(STDOUT_FILENO, "argc != 2", 9);
-		return (1);
-	}
-
+	tu_test_init(argc, argv);
 	if (tu_is_test(argv[1],"0"))
 		do_test(0, "0", "\"0\" did not write 1 character", "\"0\" did not write the '0' character");
 	else if (tu_is_test(argv[1],"1"))

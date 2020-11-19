@@ -2,6 +2,16 @@
 #include <stdio.h>
 
 // Set that the test has been completed, used to determine if it has crashed or not
+void tu_test_init(int argc, char *argv[])
+{
+	tu_nop_pt(argv);
+	if (argc != 2)
+	{
+		write(STDOUT_FILENO, "argc != 2", 9);
+		exit(1);
+	}
+	tu_malloc_reset();
+}
 void tu_test_finish()
 {
 	if (!*get_has_written_result())

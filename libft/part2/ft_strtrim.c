@@ -10,12 +10,7 @@ void do_test(char* input, char* set, char* expected, char* message, char* msize_
 
 int main(int argc, char *argv[])
 {
-	if (argc != 2)
-	{
-		write(STDOUT_FILENO, "argc != 2", 9);
-		return (1);
-	}
-
+	tu_test_init(argc, argv);
 	if (tu_is_test(argv[1],"0"))
 		do_test("Hello World", " ", "Hello World", "Basic input", "Basic input msize, what?");
 	else if (tu_is_test(argv[1],"1"))

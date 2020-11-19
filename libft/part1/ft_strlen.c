@@ -4,11 +4,7 @@
 
 int main(int argc, char *argv[])
 {
-	if (argc != 2)
-	{
-		write(STDOUT_FILENO, "argc != 2", 9);
-		return (1);
-	}
+	tu_test_init(argc, argv);
 	if (tu_is_test(argv[1],"0"))
 		tu_eq_int("basic input", ft_strlen("Hello world!"), 12);
 	else if (tu_is_test(argv[1],"1"))
