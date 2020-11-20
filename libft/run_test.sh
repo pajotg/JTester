@@ -16,18 +16,18 @@ make_result=$(cd "$path_to_libft"; make bonus)
 
 # test!
 if [ $# == 1 ]; then
-	$DIR/../run_test.sh "$path_to_libft/libft.a" "$path_to_libft" "$DIR"
+	$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft" "$DIR"
 else
 	base_name=$(basename "$test")
 	if [[ "$base_name" == "$test" ]]; then #if we dont have a path specified assume the test is in this directory
 		file=$(find "$DIR" -type f -name "$test")
 		if [[ "${file}" ]]; then # if we can find files with that name, test those
-			$DIR/../run_test.sh "$path_to_libft/libft.a" "$path_to_libft" "$file"
+			$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft" "$file"
 		else # otherwise asssume $test contains a folder name
-			$DIR/../run_test.sh "$path_to_libft/libft.a" "$path_to_libft" "$DIR/$test"
+			$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft" "$DIR/$test"
 		fi
 	else
-		$DIR/../run_test.sh "$path_to_libft/libft.a" "$path_to_libft" "$test"
+		$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft" "$test"
 	fi
 fi
 

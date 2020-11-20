@@ -1,18 +1,20 @@
 #include "libft.h"
 #include "test_utils.h"
+#include <ctype.h>
 
 int main(int argc, char *argv[])
 {
 	tu_test_init(argc, argv);
 	if (tu_is_test(argv[1],"0"))
 	{
-		for (char i = -128; i < 0; i++)
-			if (ft_isascii(i))
-				tu_ko_message_exit("-128 to 0");
-		for (char i = 0; i >= 0; i++)
-			if (!ft_isascii(i))
-				tu_ko_message_exit("0 to 127");
-		tu_ok();
+		for (char i = '\0'; i < '0'; i++)
+			if ((bool)ft_isascii(i) != (bool)isascii(i))
+			{
+				if (isascii(i))
+					tu_ko_message_exit("%c(%i) is ascii, but your function does not agree!", i != 0 ? i : 127, i);
+				else
+					tu_ko_message_exit("%c(%i) is not ascii, but your function does not agree!", i != 0 ? i : 127, i);
+			}
 	}
 	else
 		tu_test_stop();

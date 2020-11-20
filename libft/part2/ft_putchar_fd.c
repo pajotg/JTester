@@ -18,10 +18,10 @@ int main(int argc, char *argv[])
 		char buff[127];
 		size_t num_chars = read(data.read_end, buff, 127);
 		if (num_chars != 126)
-			tu_ko_message_exit("Wrong number of chars printed");
+			tu_ko_message_exit("Wrong number of chars printed! expected %i but got %i: \"%s\"", 126, num_chars, buff);
 		for (char c = 1; c < 127; c++)
 			if (buff[c-1] != c)
-				tu_ko_message_exit("Wrong char printed");
+				tu_ko_message_exit("Wrong char printed: %s", buff);
 	}
 	else
 		tu_test_stop();

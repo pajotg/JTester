@@ -57,8 +57,13 @@ int main(int argc, char *argv[])
 	else if (tu_is_test(argv[1],"5"))
 	{
 		tu_test_can_crash();
-		char* Expected[1] = { NULL };
-		do_test(NULL, '\0', Expected, "double NULL split char", "double NULL msize, what?");
+		char** result = ft_split(NULL, '\0');
+		if (result != NULL)
+		{
+			if (result[0] != NULL)
+				tu_ko_message_exit("Your ft_split does not return null or a array of null when given NULL and NULL");
+			free(result);
+		}
 	}
 	else if (tu_is_test(argv[1],"6"))
 	{

@@ -12,11 +12,12 @@ int main(int argc, char *argv[])
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		ft_putendl_fd("Hello World!", STDOUT_FILENO);
 		tu_stop_capture_fd(&data);
-		char buff[13];
-		size_t num_chars = read(data.read_end, buff, 13);
+		char buff[14];
+		size_t num_chars = read(data.read_end, buff, 14);
 		if (num_chars != 13)
-			tu_ko_message_exit("Wrong number of characters printed");
-		tu_eq_str("Wrong string printed", buff, "Hello World!\n", false, false);
+			tu_ko_message_exit("Wrong number of characters printed! expected %i but got %i: \"%s\"", 126, num_chars, buff);
+		if (strcmp("Hello World!\n", buff) != 0)
+			tu_ko_message_exit("Wrong string printed! expected \"%s\" but got \"%s\"", "Hello World!\n", buff);
 	}
 	else if (tu_is_test(argv[1],"1"))
 	{

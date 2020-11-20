@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 	else if (tu_is_test(argv[1],"8"))
 	{
 		tu_test_should_crash();
-		ft_strnstr(NULL, "hey", 0);
+		ft_strnstr(NULL, "hey", 1);
 	}
 	else if (tu_is_test(argv[1],"9"))
 	{

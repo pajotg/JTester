@@ -8,7 +8,10 @@
 		"C_Cpp.default.includePath": [
 			"${default}",
 			"${workspaceFolder}/utils/include",
+			"${workspaceFolder}/ft_printf",
 			"${workspaceFolder}/../libft",
+			"${workspaceFolder}/../get_next_line",
+			"${workspaceFolder}/../ft_printf",
 		],
 		"files.associations": {
 			"test_utils.h": "c",

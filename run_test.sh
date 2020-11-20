@@ -1,16 +1,16 @@
 #!/bin/bash
 
 if [ $# != 3 ]; then
-	echo -e "\e[1;91mUsage: run_test.sh [lib] [include] [tests_folder/file]"
+	echo -e "\e[1;91mUsage: run_test.sh [lib] [gcc args] [tests_folder/file]"
 	return 1 2>/dev/null
 	exit 1
 fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-lib=$1
-include=$2
-tests_folder=$3
+lib="$1"
+gcc_args="$2"
+tests_folder="$3"
 utils_lib=$DIR"/utils/utils.a"
 utils_include=$DIR"/utils/include"
 flags="-Wall -Wextra -Werror"
@@ -26,7 +26,7 @@ make_result=$(cd $DIR/utils/PRELOAD; make)
 make_result=$(cd $DIR/utils/PRELOAD/NOP; make)
 
 #echo lib $lib
-#echo include $include
+#echo gcc args $gcc_args
 #echo tests_folder $tests_folder
 #echo utils_lib $utils_lib
 #echo utils_include $utils_include
@@ -76,18 +76,12 @@ run_test ()
 	test_name=$1
 
 	case "${device}" in
-		Linux*) compile_out=$(cc $flags -o $test_file -I $utils_include -I $include $test_name $lib $utils_lib $LIB_PRELOAD_NOP 2>&1);;
-		Darwin*)compile_out=$(cc $flags -o $test_file -I $utils_include -I $include $test_name $lib $utils_lib $LIB_PRELOAD_NOP 2>&1);;
+		Linux*) compile_out=$(cc $flags -o $test_file -I $utils_include $gcc_args $test_name $lib $utils_lib $LIB_PRELOAD_NOP 2>&1);;
+		Darwin*)compile_out=$(cc $flags -o $test_file -I $utils_include $gcc_args $test_name $lib $utils_lib $LIB_PRELOAD_NOP 2>&1);;
 		*)
 			echo "Update run_test case"
 			return;;
 	esac
-
-	#lib_base=$(basename $LD_PRELOAD_NOP_LIB)
-	#lib_base=${lib_base:3:$((${#lib_base} - 3 - 3))}
-	#lib_dir=$(dirname $LD_PRELOAD_NOP_LIB)/
-	#echo $lib_dir $lib_base
-	#compile_out=$(cc $flags -o $test_file -L$lib_dir -l$lib_base -I $utils_include -I $include $test_name $lib $utils_lib 2>&1)
 
 	exit_code=$?
 	base_name=$(basename $test_name)
@@ -122,8 +116,8 @@ run_test ()
 		# test type:
 		#	x or X: can crash/should crash
 		# after test type result: - or +, in case of - we have -Reason or just -
-		#echo
-		#echo -n "$ret"
+		# echo
+		# echo -n "$ret"
 
 		# timeout/stop
 		if [[ $exit_code -eq 137 ]]; then
