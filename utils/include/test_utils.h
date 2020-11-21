@@ -28,6 +28,26 @@
 		tu_test_stop();\
 	tu_test_finish();
 
+// Okay, this is not the best use of macros, maybe this usage is why they are not the norm
+#define CREATE_TMP_VPRINTF(name, BUFF_SIZE) static char* v##name(char* format, va_list lst)\
+{\
+	static char str[BUFF_SIZE];\
+	int print_size = vsnprintf(str, BUFF_SIZE, format, lst);\
+	if (print_size == BUFF_SIZE)\
+	{\
+		fprintf(stderr, "Tried to print a error message longer than "#BUFF_SIZE"! increase buffer size!");\
+	}\
+	return str;\
+}\
+static char* name(char* format, ...)\
+{\
+	va_list lst;\
+	va_start(lst, format);\
+	char* str = v##name(format, lst);\
+	va_end(lst);\
+	return str;\
+}
+
 typedef struct s_capture_data
 {
 	int fd;

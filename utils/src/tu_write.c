@@ -20,19 +20,7 @@ static void before_write_result()
 	*has_written_result = true;
 }
 
-static char* tmp_printfstr(char* format, va_list lst)
-{
-	const int buffer_size = 1024;
-	static char str[1024];	// why cant i put buffer_size in it? ITS CONSTANT! dont complain about it not being constant!
-
-	int print_size = vsnprintf(str, buffer_size, format, lst);
-	if (print_size == buffer_size)
-	{
-		fprintf(stderr, "Tried to print a error message longer than %i! increase buffer size!", buffer_size);
-	}
-
-	return str;
-}
+CREATE_TMP_VPRINTF(tmp_sprintf,1024)
 
 void tu_ok()
 {
@@ -44,7 +32,7 @@ void tu_vok_message(char *message, va_list lst)
 	before_write_result();
 	write(STDOUT_FILENO, OK_CHR, 1);
 
-	char* str = tmp_printfstr(message, lst);
+	char* str = vtmp_sprintf(message, lst);
 	write(STDOUT_FILENO, str, strlen(str));
 }
 void tu_ok_message(char *message, ...)
@@ -64,7 +52,7 @@ void tu_vko_message(char *message, va_list lst)
 	before_write_result();
 	write(STDOUT_FILENO, KO_CHR, 1);
 
-	char* str = tmp_printfstr(message, lst);
+	char* str = vtmp_sprintf(message, lst);
 	write(STDOUT_FILENO, str, strlen(str));
 }
 void tu_ko_message(char *message, ...)
@@ -84,7 +72,7 @@ void tu_vwarning_message(char *message, va_list lst)
 	before_write_result();
 	write(STDOUT_FILENO, WARNING_CHR, 1);
 
-	char* str = tmp_printfstr(message, lst);
+	char* str = vtmp_sprintf(message, lst);
 	write(STDOUT_FILENO, str, strlen(str));
 }
 void tu_warning_message(char *message, ...)
