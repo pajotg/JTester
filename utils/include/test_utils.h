@@ -15,6 +15,19 @@
 #define SHOULD_CRASH_CHR "X"
 #define CAN_CRASH_CHR "x"
 
+#define TEST_START tu_test_init(argc, argv);\
+	if (tu_is_test(argv[1],"0"))\
+	{
+
+#define TEST(indx) }\
+	else if (tu_is_test(argv[1],#indx))\
+	{
+
+#define TEST_END }\
+	else\
+		tu_test_stop();\
+	tu_test_finish();
+
 typedef struct s_capture_data
 {
 	int fd;
