@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <string.h>
 
+extern char* test_bonus_flags[];
+extern const int num_test_bonus_flags;
 extern char* test_mandatory_flags[];
 extern const int num_test_mandatory_flags;
 extern char* test_width_len[];
@@ -13,6 +15,15 @@ extern char* test_width_len_1[];
 extern const int num_test_width_len_1;
 extern char* test_width_len_2[];
 extern const int num_test_width_len_2;
+
+extern int TestInts[];
+extern const int num_TestInts;
+extern void* TestPointers[];
+extern const int num_TestPointers;
+extern char TestChars[];
+extern const int num_TestChars;
+extern char* TestStrings[];
+extern const int num_TestStrings;
 
 int	ft_printf(const char *str, ...);
 
