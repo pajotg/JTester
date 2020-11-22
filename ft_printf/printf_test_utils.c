@@ -26,11 +26,11 @@ const int num_TestPointers = 5;
 char TestChars[] = { 'A', 'a', '9', '\0', 255, -25 };
 const int num_TestChars = 6;
 
-char* TestStrings[] = { NULL, "", "Hello World!", "€" };
-const int num_TestStrings = 4;
+char* TestStrings[] = { NULL, "", "Hello World!", "€", "⅐⅑⅒⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞⅟ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫⅬⅭⅮⅯⅰⅱⅲⅳⅴⅵⅶⅷⅸⅹⅺⅻⅼⅽⅾⅿↀↁↂↃↄↅↆↇↈ↉↊↋🐮🦈🚲⛔🕯️➕🔺💇🧠📻🥤🍝🍥💴🌬️🥓🙍⚓👰🐂📽️🏅⛅🇦🇪🇵🇪🧜📮⛳🔽🚂🏌️🐇🏍️🎲🥛🎣👱🎏🕷️🦍🔘🐅🏇🔐🏩👺🅱️🚙🐧⚖️🎃🌄🎾🐚🎺❇️🎫⌚🌋💒👳❎👟👃🛌🚓⏬📈⛄⏱️😾🛫🤱🍐☮️🚃⏳🌜📹🐛👔👗🐌🎱🌰🌮🕵️🔅✉️🇪🇬🚑📦🤥🔄🤳💲🎋🗓️🤖🥔"};
+const int num_TestStrings = 5;
 
 // Total unique tests = (num_test_mandatory_flags*num_test_bonus_flags) * (num_test_width_len + num_test_width_len_1 + num_test_width_len_2) * (num_TestInts + num_TestPointers + num_TestChars + num_TestStrings)
-// That equals.. 19200, nice!
+// That equals.. 20160, nice! (40 * 24 * 21)
 
 static char buff_ft[BUFF_SIZE];
 static char buff_real[BUFF_SIZE];
