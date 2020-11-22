@@ -12,6 +12,8 @@ int main(int argc, char *argv[])
 		for (int i = 0; i < num_test_bonus_flags; i++)
 		{
 			char* bonus_flag = test_bonus_flags[i];
+			if (bonus_flag[0] == '\0')
+				continue;
 			for (int mandatory_flag_id = 0; mandatory_flag_id < num_test_mandatory_flags; mandatory_flag_id++)
 			{
 				char* mandatory_flag = test_mandatory_flags[mandatory_flag_id];
@@ -36,6 +38,8 @@ int main(int argc, char *argv[])
 			for (int i = 0; i < num_test_bonus_flags; i++)
 			{
 				char* bonus_flag = test_bonus_flags[i];
+				if (bonus_flag[0] == '\0')
+					continue;
 				for (int prefix_id = 0; prefix_id < num_test_mandatory_flags; prefix_id++)
 				{
 					char* prefix = test_mandatory_flags[prefix_id];
@@ -61,6 +65,8 @@ int main(int argc, char *argv[])
 			for (int i = 0; i < num_test_bonus_flags; i++)
 			{
 				char* bonus_flag = test_bonus_flags[i];
+				if (bonus_flag[0] == '\0')
+					continue;
 				for (int prefix_id = 0; prefix_id < num_test_mandatory_flags; prefix_id++)
 				{
 					char* prefix = test_mandatory_flags[prefix_id];
@@ -86,6 +92,8 @@ int main(int argc, char *argv[])
 			for (int i = 0; i < num_test_bonus_flags; i++)
 			{
 				char* bonus_flag = test_bonus_flags[i];
+				if (bonus_flag[0] == '\0')
+					continue;
 				for (int prefix_id = 0; prefix_id < num_test_mandatory_flags; prefix_id++)
 				{
 					char* prefix = test_mandatory_flags[prefix_id];
@@ -111,10 +119,11 @@ int main(int argc, char *argv[])
 			for (int i = 0; i < num_test_bonus_flags; i++)
 			{
 				char* bonus_flag = test_bonus_flags[i];
+				if (bonus_flag[0] == '\0')
+					continue;
 				for (int prefix_id = 0; prefix_id < num_test_mandatory_flags; prefix_id++)
 				{
 					char* prefix = test_mandatory_flags[prefix_id];
-
 					for (int i = 0; i < num_test_width_len; i++)
 						do_test_i(&data, tmp_sprintf("%%%s%s%sd", bonus_flag, prefix, test_width_len[i]), c);
 					for (int i = 0; i < num_test_width_len_1; i++)
@@ -136,10 +145,11 @@ int main(int argc, char *argv[])
 			for (int i = 0; i < num_test_bonus_flags; i++)
 			{
 				char* bonus_flag = test_bonus_flags[i];
+				if (bonus_flag[0] == '\0')
+					continue;
 				for (int prefix_id = 0; prefix_id < num_test_mandatory_flags; prefix_id++)
 				{
 					char* prefix = test_mandatory_flags[prefix_id];
-
 					for (int i = 0; i < num_test_width_len; i++)
 						do_test_i(&data, tmp_sprintf("%%%s%s%sx", bonus_flag, prefix, test_width_len[i]), c);
 					for (int i = 0; i < num_test_width_len_1; i++)
@@ -161,10 +171,11 @@ int main(int argc, char *argv[])
 			for (int i = 0; i < num_test_bonus_flags; i++)
 			{
 				char* bonus_flag = test_bonus_flags[i];
+				if (bonus_flag[0] == '\0')
+					continue;
 				for (int prefix_id = 0; prefix_id < num_test_mandatory_flags; prefix_id++)
 				{
 					char* prefix = test_mandatory_flags[prefix_id];
-
 					for (int i = 0; i < num_test_width_len; i++)
 						do_test_i(&data, tmp_sprintf("%%%s%s%sX", bonus_flag, prefix, test_width_len[i]), c);
 					for (int i = 0; i < num_test_width_len_1; i++)
@@ -186,10 +197,11 @@ int main(int argc, char *argv[])
 			for (int i = 0; i < num_test_bonus_flags; i++)
 			{
 				char* bonus_flag = test_bonus_flags[i];
+				if (bonus_flag[0] == '\0')
+						continue;
 				for (int prefix_id = 0; prefix_id < num_test_mandatory_flags; prefix_id++)
 				{
 					char* prefix = test_mandatory_flags[prefix_id];
-
 					for (int i = 0; i < num_test_width_len; i++)
 						do_test_s(&data, tmp_sprintf("%%%s%s%ss", bonus_flag, prefix, test_width_len[i]), c);
 					for (int i = 0; i < num_test_width_len_1; i++)

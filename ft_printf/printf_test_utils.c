@@ -29,11 +29,17 @@ const int num_TestChars = 6;
 char* TestStrings[] = { NULL, "", "Hello World!", "€" };
 const int num_TestStrings = 4;
 
+// Total unique tests = (num_test_mandatory_flags*num_test_bonus_flags) * (num_test_width_len + num_test_width_len_1 + num_test_width_len_2) * (num_TestInts + num_TestPointers + num_TestChars + num_TestStrings)
+// That equals.. 19200, nice!
+
 static char buff_ft[BUFF_SIZE];
 static char buff_real[BUFF_SIZE];
 
 void comp(capture_data* data, char* str, char* buff_ft, char* buff_real, int ft_out, int real_out, int read_out)
 {
+	if (real_out == BUFF_SIZE) // Sanity check
+		tu_warning_message_exit("real_out == BUFF_SIZE, increase it!");
+
 	if (real_out != ft_out)
 	{
 		tu_stop_capture_fd(data);
