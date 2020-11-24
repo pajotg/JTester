@@ -2,6 +2,9 @@
 
 CREATE_TMP_VPRINTF(tmp_sprintf,1024)
 
+// cspdiuxX%
+// u
+
 int main(int argc, char *argv[])
 {
 	TEST_START
@@ -23,7 +26,7 @@ int main(int argc, char *argv[])
 		do_test(&data, "%2%%5%%.2%");
 		do_test(&data, "Hey %% %% %% there!");
 		tu_stop_capture_fd(&data);
-	TEST(1)
+	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test_i(&data, "%c", 'A');
@@ -44,7 +47,7 @@ int main(int argc, char *argv[])
 			}
 		}
 		tu_stop_capture_fd(&data);
-	TEST(2)
+	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test_i(&data, "%i", 5);
@@ -65,7 +68,7 @@ int main(int argc, char *argv[])
 			}
 		}
 		tu_stop_capture_fd(&data);
-	TEST(3)
+	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test_p(&data, "%p", NULL);
@@ -86,7 +89,7 @@ int main(int argc, char *argv[])
 			}
 		}
 		tu_stop_capture_fd(&data);
-	TEST(4)
+	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test_p(&data, "%d", NULL);
@@ -107,7 +110,7 @@ int main(int argc, char *argv[])
 			}
 		}
 		tu_stop_capture_fd(&data);
-	TEST(5)
+	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test_p(&data, "%x", NULL);
@@ -128,7 +131,7 @@ int main(int argc, char *argv[])
 			}
 		}
 		tu_stop_capture_fd(&data);
-	TEST(6)
+	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test_p(&data, "%X", NULL);
@@ -149,7 +152,28 @@ int main(int argc, char *argv[])
 			}
 		}
 		tu_stop_capture_fd(&data);
-	TEST(7)
+	TEST
+		capture_data data;
+		tu_start_capture_fd(STDOUT_FILENO, &data);
+		do_test_p(&data, "%u", NULL);
+		tu_malloc_reset();	// Static variables...
+		for (int i = 0; i < num_TestInts; i++)
+		{
+			int c = TestInts[i];
+			for (int prefix_id = 0; prefix_id < num_test_mandatory_flags; prefix_id++)
+			{
+				char* prefix = test_mandatory_flags[prefix_id];
+
+				for (int i = 0; i < num_test_width_len; i++)
+					do_test_i(&data, tmp_sprintf("%%%s%su", prefix, test_width_len[i]), c);
+				for (int i = 0; i < num_test_width_len_1; i++)
+					do_test_ii(&data, tmp_sprintf("%%%s%su", prefix, test_width_len_1[i]), tu_rand_range(-5, 5), c);
+				for (int i = 0; i < num_test_width_len_2; i++)
+					do_test_iii(&data, tmp_sprintf("%%%s%su", prefix, test_width_len_2[i]), tu_rand_range(-5, 5), tu_rand_range(-5, 5), c);
+			}
+		}
+		tu_stop_capture_fd(&data);
+	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test_p(&data, "%s", NULL);

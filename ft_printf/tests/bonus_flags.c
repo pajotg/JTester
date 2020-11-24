@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 			}
 		}
 		tu_stop_capture_fd(&data);
-	TEST(1)
+	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test_i(&data, "%c", 'A');
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 			}
 		}
 		tu_stop_capture_fd(&data);
-	TEST(2)
+	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test_i(&data, "%i", 5);
@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 			}
 		}
 		tu_stop_capture_fd(&data);
-	TEST(3)
+	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test_p(&data, "%p", NULL);
@@ -97,18 +97,17 @@ int main(int argc, char *argv[])
 				for (int prefix_id = 0; prefix_id < num_test_mandatory_flags; prefix_id++)
 				{
 					char* prefix = test_mandatory_flags[prefix_id];
-
 					for (int i = 0; i < num_test_width_len; i++)
 						do_test_p(&data, tmp_sprintf("%%%s%s%sp", bonus_flag, prefix, test_width_len[i]), c);
 					for (int i = 0; i < num_test_width_len_1; i++)
 						do_test_ip(&data, tmp_sprintf("%%%s%s%sp", bonus_flag, prefix, test_width_len_1[i]), tu_rand_range(-5, 5), c);
 					for (int i = 0; i < num_test_width_len_2; i++)
-						do_test_iip(&data, tmp_sprintf("%%5s%s%sp", bonus_flag, prefix, test_width_len_2[i]), tu_rand_range(-5, 5), tu_rand_range(-5, 5), c);
+						do_test_iip(&data, tmp_sprintf("%%%s%s%sp", bonus_flag, prefix, test_width_len_2[i]), tu_rand_range(-5, 5), tu_rand_range(-5, 5), c);
 				}
 			}
 		}
 		tu_stop_capture_fd(&data);
-	TEST(4)
+	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test_p(&data, "%d", NULL);
@@ -134,7 +133,7 @@ int main(int argc, char *argv[])
 			}
 		}
 		tu_stop_capture_fd(&data);
-	TEST(5)
+	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test_p(&data, "%x", NULL);
@@ -155,12 +154,12 @@ int main(int argc, char *argv[])
 					for (int i = 0; i < num_test_width_len_1; i++)
 						do_test_ii(&data, tmp_sprintf("%%%s%s%sx", bonus_flag, prefix, test_width_len_1[i]), tu_rand_range(-5, 5), c);
 					for (int i = 0; i < num_test_width_len_2; i++)
-						do_test_iii(&data, tmp_sprintf("%%5s%s%sx", bonus_flag, prefix, test_width_len_2[i]), tu_rand_range(-5, 5), tu_rand_range(-5, 5), c);
+						do_test_iii(&data, tmp_sprintf("%%%s%s%sx", bonus_flag, prefix, test_width_len_2[i]), tu_rand_range(-5, 5), tu_rand_range(-5, 5), c);
 				}
 			}
 		}
 		tu_stop_capture_fd(&data);
-	TEST(6)
+	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test_p(&data, "%X", NULL);
@@ -186,7 +185,33 @@ int main(int argc, char *argv[])
 			}
 		}
 		tu_stop_capture_fd(&data);
-	TEST(7)
+	TEST
+		capture_data data;
+		tu_start_capture_fd(STDOUT_FILENO, &data);
+		do_test_p(&data, "%u", NULL);
+		tu_malloc_reset();	// Static variables...
+		for (int i = 0; i < num_TestInts; i++)
+		{
+			int c = TestInts[i];
+			for (int i = 0; i < num_test_bonus_flags; i++)
+			{
+				char* bonus_flag = test_bonus_flags[i];
+				if (bonus_flag[0] == '\0')
+					continue;
+				for (int prefix_id = 0; prefix_id < num_test_mandatory_flags; prefix_id++)
+				{
+					char* prefix = test_mandatory_flags[prefix_id];
+					for (int i = 0; i < num_test_width_len; i++)
+						do_test_i(&data, tmp_sprintf("%%%s%s%su", bonus_flag, prefix, test_width_len[i]), c);
+					for (int i = 0; i < num_test_width_len_1; i++)
+						do_test_ii(&data, tmp_sprintf("%%%s%s%su", bonus_flag, prefix, test_width_len_1[i]), tu_rand_range(-5, 5), c);
+					for (int i = 0; i < num_test_width_len_2; i++)
+						do_test_iii(&data, tmp_sprintf("%%%s%s%su", bonus_flag, prefix, test_width_len_2[i]), tu_rand_range(-5, 5), tu_rand_range(-5, 5), c);
+				}
+			}
+		}
+		tu_stop_capture_fd(&data);
+	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test_p(&data, "%s", NULL);

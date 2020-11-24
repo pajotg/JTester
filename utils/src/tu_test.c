@@ -11,9 +11,16 @@ void tu_test_init(int argc, char *argv[])
 		exit(1);
 	}
 	tu_malloc_reset();
+
+	// Just testing it
+	tu_malloc_set_random(true);
+	tu_free_set_random(true);
 }
 void tu_test_finish()
 {
+	tu_malloc_set_random(false);
+	tu_free_set_random(false);
+
 	if (!*get_has_written_result())
 		if (tu_malloc_non_null_count() != tu_free_non_null_count())
 			tu_ko_message("Leaks detected %i != %i", tu_malloc_non_null_count(), tu_free_non_null_count());

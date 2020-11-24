@@ -11,6 +11,7 @@ path_to_printf="$1"
 test="$2"
 
 make_result=$(make -C $path_to_printf)
+make_result=$(make bonus -C $path_to_printf)
 
 # test!
-$DIR/../run_test.sh "$DIR/printf_test_utils.c $path_to_printf/libftprintf.a $path_to_printf/libft/libft.a" "-I $DIR" "$DIR/tests"
+$DIR/../run_test.sh "$DIR/printf_test_utils.c $path_to_printf/libftprintf.a" "-I $DIR" "$DIR/tests"

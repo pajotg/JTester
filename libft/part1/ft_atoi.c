@@ -3,32 +3,27 @@
 
 int main(int argc, char *argv[])
 {
-	tu_test_init(argc, argv);
-	if (tu_is_test(argv[1],"0"))
+	TEST_START
 		tu_eq_int("non number input", ft_atoi("hello"), 0);
-	else if (tu_is_test(argv[1],"1"))
+	TEST
 		tu_eq_int("basic input", ft_atoi("5"), 5);
-	else if (tu_is_test(argv[1],"2"))
+	TEST
 		tu_eq_int("basic input",ft_atoi("-5"), -5);
-	else if (tu_is_test(argv[1],"3"))
+	TEST
 		tu_eq_int("zero",ft_atoi("0"), 0);
-	else if (tu_is_test(argv[1],"4"))
+	TEST
 		tu_eq_int("+ sign", ft_atoi("+5"), 5);
-	else if (tu_is_test(argv[1],"5"))
+	TEST
 		tu_eq_int("spaces", ft_atoi("   -5 56"), -5);
-	else if (tu_is_test(argv[1],"6"))
+	TEST
 		tu_eq_int("maximum number", ft_atoi("+2147483647"), 2147483647);
-	else if (tu_is_test(argv[1],"7"))
+	TEST
 		tu_eq_int("minimum number", ft_atoi("-2147483648"), -2147483648);
-	else if (tu_is_test(argv[1],"8"))
-	{
+	TEST
 		tu_test_should_crash();
 		ft_atoi(NULL);
-	}
-	else if (tu_is_test(argv[1],"9"))
+	TEST
 		tu_eq_int("empty string", ft_atoi(""), 0);
-	else
-		tu_test_stop();
-	tu_test_finish();
+	TEST_END
 	return (0);
 }

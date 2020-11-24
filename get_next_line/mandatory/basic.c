@@ -31,9 +31,7 @@ int create_temp_fd(char* str)
 
 int main(int argc, char *argv[])
 {
-	tu_test_init(argc, argv);
-	if (tu_is_test(argv[1],"0"))
-	{
+	TEST_START
 		char* test_str = "Hello World! what an amazing day we are having huh?";
 		int fd = create_temp_fd(test_str);
 
@@ -44,9 +42,7 @@ int main(int argc, char *argv[])
 		check(ret, line, 0, test_str);
 		free(line);
 		tu_malloc_reset();	// since we use static variables, we should ignore those, we will later test for memory leaks
-	}
-	else if (tu_is_test(argv[1],"1"))
-	{
+	TEST
 		char* test_str = "Hello World!\nwhat an amazing day\nwe are having huh?";
 		int fd = create_temp_fd(test_str);
 
@@ -63,9 +59,6 @@ int main(int argc, char *argv[])
 		close(fd);
 		free(line);
 		// my get next line also clears the static variables once it reaches the end, so it will have 1 more free, how do i account for that properly?
-	}
-	else
-		tu_test_stop();
-	tu_test_finish();
+	TEST_END
 	return (0);
 }

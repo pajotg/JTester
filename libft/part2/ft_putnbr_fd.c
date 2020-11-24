@@ -17,29 +17,23 @@ void do_test(int value, char* correct, char* message_num_chars, char* message_st
 		tu_ko_message_exit(message_num_chars);
 	if (strncmp(buff, correct, num_chars) != 0)
 		tu_ko_message_exit(message_string);
-	tu_ok();
 }
 
 int main(int argc, char *argv[])
 {
-	tu_test_init(argc, argv);
-	if (tu_is_test(argv[1],"0"))
+	TEST_START
 		do_test(0, "0", "\"0\" did not write 1 character", "\"0\" did not write the '0' character");
-	else if (tu_is_test(argv[1],"1"))
+	TEST
 		do_test(5, "5", "\"5\" did not write 1 character", "\"5\" did not write the '5' character");
-	else if (tu_is_test(argv[1],"2"))
+	TEST
 		do_test(-5, "-5", "-5 wrong length", "-5 wrong characters");
-	else if (tu_is_test(argv[1],"3"))
+	TEST
 		do_test(2147483647, "2147483647", "2147483647 wrong length", "2147483647 wrong characters");
-	else if (tu_is_test(argv[1],"4"))
+	TEST
 		do_test(-2147483648, "-2147483648", "-2147483648 wrong length", "-2147483648 wrong characters");
-	else if (tu_is_test(argv[1],"5"))
-	{
+	TEST
 		tu_malloc_null_in(0);
 		do_test(5, "5", "using malloc in ft_putnbr is forbidden!", "using malloc in ft_putnbr is forbidden!");
-	}
-	else
-		tu_test_stop();
-	tu_test_finish();
+	TEST_END
 	return (0);
 }

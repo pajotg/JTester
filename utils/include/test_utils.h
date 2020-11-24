@@ -15,12 +15,16 @@
 #define SHOULD_CRASH_CHR "X"
 #define CAN_CRASH_CHR "x"
 
+// How annoying that i have to use something like this to expand the __COUNTER__
+#define JTMP_STRINGIFY_2(a) #a
+#define STRINGIFY(a) JTMP_STRINGIFY_2(a)
+
 #define TEST_START tu_test_init(argc, argv);\
-	if (tu_is_test(argv[1],"0"))\
+	if (tu_is_test(argv[1],STRINGIFY(__COUNTER__)))\
 	{
 
-#define TEST(indx) }\
-	else if (tu_is_test(argv[1],#indx))\
+#define TEST }\
+	else if (tu_is_test(argv[1],STRINGIFY(__COUNTER__)))\
 	{
 
 #define TEST_END }\
@@ -89,6 +93,7 @@ void tu_warning_message_exit(char *message, ...);
 void tu_eq_msize(char* message, void* got, int expected, bool free_got);
 void tu_eq_int(char* message, int got, int expected);
 void tu_eq_char(char* message, char got, char expected);
+void tu_eq_bool(char* message, bool got, bool expected);
 void tu_eq_str(char* message, char* got, char* expected, bool free_got, bool free_expected);
 void tu_eq_str_msize(char* message, char* msize_message, char* got, char* expected, bool free_got, bool free_expected);
 void tu_eq_arr(char* message, void* got, void* expected, int size, bool free_got, bool free_expected);
@@ -116,5 +121,6 @@ extern int tu_free_non_null_count();
 extern void tu_malloc_null_in(int num_mallocs);
 extern int tu_malloc_non_null_count();
 extern void tu_malloc_set_random(bool random);
+extern void tu_free_set_random(bool random);
 
 #endif

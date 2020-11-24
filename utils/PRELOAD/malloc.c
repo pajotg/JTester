@@ -4,6 +4,15 @@
 #define USE_INTERSPOSE
 #endif
 
+
+#if __linux__
+# include <malloc.h>
+# define MALLOC_SIZE malloc_usable_size
+#else
+# include "malloc/malloc.h"
+# define MALLOC_SIZE malloc_size
+#endif
+
 #include <stdio.h>
 #include <dlfcn.h>
 #include <stdbool.h>
@@ -25,6 +34,7 @@ static int free_count = 0;
 static int free_non_null_count = 0;
 static int malloc_stop_id = -1;
 static bool malloc_random = false;
+static bool free_random = false;
 
 void tu_malloc_reset()
 {
@@ -57,6 +67,10 @@ void tu_malloc_null_in(int num_mallocs)
 void tu_malloc_set_random(bool random)
 {
 	malloc_random = random;
+}
+void tu_free_set_random(bool random)
+{
+	free_random = random;
 }
 
 
@@ -106,8 +120,11 @@ void* malloc(size_t bytes)
 	{
 		malloc_non_null_count++;
 		if (malloc_random)
+		{
+			bytes = MALLOC_SIZE(pt);
 			for (size_t i = 0; i < bytes; i++)
 				((unsigned char*)pt)[i] = rand();
+		}
 	}
 	return pt;
 }
@@ -126,6 +143,13 @@ void free(void* pt)
 	free_count++;
 	if (pt != NULL)	// Freeing a null pointer does nothing, dont count towards the free count
 		free_non_null_count++;
+
+	if (free_random && pt != NULL)
+	{
+		size_t bytes = MALLOC_SIZE(pt);
+		for (size_t i = 0; i < bytes; i++)
+			((unsigned char*)pt)[i] = rand();
+	}
 
 	#ifdef USE_INTERSPOSE
 	free(pt);

@@ -15,3 +15,4 @@ int tu_free_count() { error(); return -1; }
 int tu_free_non_null_count() { error(); return -1; };
 void tu_malloc_null_in(int num_mallocs) { error(); }
 void tu_malloc_set_random(bool random) { error(); }
+void tu_free_set_random(bool random) { error(); }

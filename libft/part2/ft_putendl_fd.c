@@ -5,9 +5,7 @@
 
 int main(int argc, char *argv[])
 {
-	tu_test_init(argc, argv);
-	if (tu_is_test(argv[1],"0"))
-	{
+	TEST_START
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		ft_putendl_fd("Hello World!", STDOUT_FILENO);
@@ -18,9 +16,7 @@ int main(int argc, char *argv[])
 			tu_ko_message_exit("Wrong number of characters printed! expected %i but got %i: \"%s\"", 126, num_chars, buff);
 		if (strcmp("Hello World!\n", buff) != 0)
 			tu_ko_message_exit("Wrong string printed! expected \"%s\" but got \"%s\"", "Hello World!\n", buff);
-	}
-	else if (tu_is_test(argv[1],"1"))
-	{
+	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		for (int i = 0; i < 250; i++)
@@ -43,9 +39,6 @@ int main(int argc, char *argv[])
 			free(str);
 		}
 		tu_stop_capture_fd(&data);
-	}
-	else
-		tu_test_stop();
-	tu_test_finish();
+	TEST_END
 	return (0);
 }

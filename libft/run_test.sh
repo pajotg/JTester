@@ -15,9 +15,14 @@ make_result=$(cd "$path_to_libft"; make)
 make_result=$(cd "$path_to_libft"; make bonus)
 
 # test!
-if [ $# == 1 ]; then
-	$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft" "$DIR"
-else
+if [ $# == 1 ]; then # No extra args? run all the tests!
+	printf "\e[1;36m--[[        Part 1        ]]--\e[0m\n"
+	$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft" "$DIR/part1"
+	printf "\e[1;36m--[[        Part 2        ]]--\e[0m\n"
+	$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft" "$DIR/part2"
+	printf "\e[1;36m--[[        Bonus         ]]--\e[0m\n"
+	$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft" "$DIR/bonus"
+else # figure out what the extra arg means, does it mean a single test? part1? part2? ft_is*? a external test (not in the test directory)?
 	base_name=$(basename "$test")
 	if [[ "$base_name" == "$test" ]]; then #if we dont have a path specified assume the test is in this directory
 		file=$(find "$DIR" -type f -name "$test")
@@ -26,7 +31,7 @@ else
 		else # otherwise asssume $test contains a folder name
 			$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft" "$DIR/$test"
 		fi
-	else
+	else #we specified a path, asssume a external test
 		$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft" "$test"
 	fi
 fi
@@ -44,12 +49,7 @@ fi
 # ft_strncmp.c
 # ft_strrchr.c
 
-# ft_lstadd_back.c
-# ft_lstadd_front.c
-# ft_lstclear.c
-# ft_lstdelone.c
 # ft_lstiter.c
 # ft_lstlast.c
 # ft_lstmap.c
-# ft_lstnew.c
 # ft_lstsize.c

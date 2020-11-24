@@ -5,9 +5,7 @@
 
 int main(int argc, char *argv[])
 {
-	tu_test_init(argc, argv);
-	if (tu_is_test(argv[1],"0"))
-	{
+	TEST_START
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		ft_putstr_fd("Hello World!", STDOUT_FILENO);
@@ -17,9 +15,7 @@ int main(int argc, char *argv[])
 		if (num_chars != 12)
 			tu_ko_message_exit("Wrong number of characters printed");
 		tu_eq_str("Wrong string printed", buff, "Hello World!", false, false);
-	}
-	else if (tu_is_test(argv[1],"1"))
-	{
+	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		for (int i = 0; i < 250; i++)
@@ -42,9 +38,6 @@ int main(int argc, char *argv[])
 			free(str);
 		}
 		tu_stop_capture_fd(&data);
-	}
-	else
-		tu_test_stop();
-	tu_test_finish();
+	TEST_END
 	return (0);
 }

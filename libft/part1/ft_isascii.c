@@ -4,9 +4,7 @@
 
 int main(int argc, char *argv[])
 {
-	tu_test_init(argc, argv);
-	if (tu_is_test(argv[1],"0"))
-	{
+	TEST_START
 		for (char i = '\0'; i < '0'; i++)
 			if ((bool)ft_isascii(i) != (bool)isascii(i))
 			{
@@ -15,9 +13,6 @@ int main(int argc, char *argv[])
 				else
 					tu_ko_message_exit("%c(%i) is not ascii, but your function does not agree!", i != 0 ? i : 127, i);
 			}
-	}
-	else
-		tu_test_stop();
-	tu_test_finish();
+	TEST_END
 	return (0);
 }

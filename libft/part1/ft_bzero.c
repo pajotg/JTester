@@ -3,9 +3,7 @@
 
 int main(int argc, char *argv[])
 {
-	tu_test_init(argc, argv);
-	if (tu_is_test(argv[1],"0"))
-	{
+	TEST_START
 		char* allocated = (char*)malloc(42);
 		for (int i = 0; i < 42; i++)
 			allocated[i] = 42;
@@ -16,21 +14,12 @@ int main(int argc, char *argv[])
 		for (int i = 21; i < 42; i++)
 			if (allocated[i] != 42)
 				tu_ko_exit("wrote too much!");
-		tu_ok_exit();
-	}
-	else if (tu_is_test(argv[1],"1"))
-	{
+		free(allocated);
+	TEST
 		ft_bzero(NULL, 0);
-		tu_ok_exit();
-	}
-	else if (tu_is_test(argv[1],"2"))
-	{
+	TEST
 		tu_test_can_crash();
 		ft_bzero(NULL, 21);
-		tu_ok_exit();
-	}
-	else
-		tu_test_stop();
-	tu_test_finish();
+	TEST_END
 	return (0);
 }

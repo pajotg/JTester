@@ -5,9 +5,7 @@
 
 int main(int argc, char *argv[])
 {
-	tu_test_init(argc, argv);
-	if (tu_is_test(argv[1],"0"))
-	{
+	TEST_START
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		for (char c = 1; c < 127; c++)
@@ -22,9 +20,6 @@ int main(int argc, char *argv[])
 		for (char c = 1; c < 127; c++)
 			if (buff[c-1] != c)
 				tu_ko_message_exit("Wrong char printed: %s", buff);
-	}
-	else
-		tu_test_stop();
-	tu_test_finish();
+	TEST_END
 	return (0);
 }
