@@ -20,15 +20,17 @@ int main(int argc, char *argv[])
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		for (int i = 0; i < 250; i++)
 		{
-			size_t length = tu_rand_range(0,125);
+			ssize_t length = tu_rand_range(0,125);
 			char* str = tu_rand_str(length);
 			ft_putstr_fd(str, STDOUT_FILENO);
 			char buff[length + 1];
-			size_t num_chars = read(data.read_end, buff, length + 1);
+			ssize_t num_chars = read(data.read_end, buff, length + 1);
+			if (length == 0 && num_chars == -1)	// read returns -1 if it read no characters, not 0
+				num_chars = 0;
 			if (num_chars != length)
 			{
 				tu_stop_capture_fd(&data);
-				tu_ko_message_exit("Wrong number of random characters printed");
+				tu_ko_message_exit("Wrong number of random characters printed, expected %i but got %i", length, num_chars);
 			}
 			if (strncmp(buff, str, num_chars) != 0)
 			{
