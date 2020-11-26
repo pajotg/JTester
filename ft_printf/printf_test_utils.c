@@ -2,6 +2,9 @@
 
 #define BUFF_SIZE 1024
 
+char* test_length_field[] = { "", "l", "ll", "h", "hh"};
+const int num_test_length_field = 5;
+
 char* test_bonus_flags[] = { "", "+", " ", " +", "#", "#+", "# ", "# +"};
 const int num_test_bonus_flags = 8;
 

@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <string.h>
 
+extern char* test_length_field[];
+extern const int num_test_length_field;
 extern char* test_bonus_flags[];
 extern const int num_test_bonus_flags;
 extern char* test_mandatory_flags[];
