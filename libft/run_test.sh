@@ -48,8 +48,3 @@ fi
 # ft_strmapi.c
 # ft_strncmp.c
 # ft_strrchr.c
-
-# ft_lstiter.c
-# ft_lstlast.c
-# ft_lstmap.c
-# ft_lstsize.c

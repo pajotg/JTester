@@ -51,6 +51,14 @@ int main(int argc, char *argv[])
 			free(result);
 		}
 	TEST
+		char** result = ft_split("", '\0');
+		if (result != NULL)
+		{
+			if (result[0] != NULL)
+				tu_ko_message_exit("Your ft_split does not return null or a array of null when given an empty string and NULL");
+			free(result);
+		}
+	TEST
 		tu_malloc_null_in(0);
 		tu_eq_pt("Somehow you returned a string array while your malloc for your array returned null, or are you cheating by using calloc?, what?", ft_split("Did you protect your malloc?", ' '), NULL, true, false);
 	TEST
