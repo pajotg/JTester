@@ -16,7 +16,9 @@ int main(int argc, char *argv[])
 		t_list* lst = NULL;
 		t_list* new = lst_new();
 		ft_lstadd_back(&lst, new);
-		tu_eq_pt("lstadd_back did not set *lst when *lst == null", lst, new, false, true);
+		tu_eq_pt("lstadd_back did not set *lst when *lst == null", lst, new, false, false);
+		tu_eq_pt("lstadd_back set next while it should not have done so!", lst->next, NULL, false, false);
+		free(new);
 	TEST
 		t_list* lst = lst_new();
 		t_list* new = lst_new();

@@ -18,6 +18,16 @@ void* map_content(void* content)
 	return content + 5;
 }
 
+void* clone_content(void* content)
+{
+	return content;
+}
+void* null_content(void* content)
+{
+	(void)content;
+	return NULL;
+}
+
 static int num_deletions = 0;
 static void* deleted[5];
 static void del(void* content)
@@ -88,6 +98,7 @@ int main(int argc, char *argv[])
 		tu_malloc_null_in(0);
 		t_list* new = ft_lstmap(lst, map_content, del);
 		tu_eq_pt("Your lstmap still returns a list even tho your malloc returned null, are you cheating by using calloc?", new, NULL, false, false);
+		tu_eq_int("Your lstmap called the del function on... something...", num_deletions, 0);
 		free_lst(lst);
 	TEST
 		t_list* lst = create_lst(5);
@@ -95,12 +106,40 @@ int main(int argc, char *argv[])
 		tu_malloc_null_in(1);
 		t_list* new = ft_lstmap(lst, map_content, del);
 		tu_eq_pt("Your lstmap still returns a list even tho your second malloc returned null, are you cheating by using calloc?", new, NULL, false, false);
+		tu_eq_int("Your lstmap did not call the del function on your already allocated lists", num_deletions, 1);
 		free_lst(lst);
 	TEST
 		t_list* lst = create_lst(5);
 
 		tu_malloc_null_in(4);
 		t_list* new = ft_lstmap(lst, map_content, del);
+		tu_eq_pt("Your lstmap still returns a list even tho your last malloc returned null, are you cheating by using calloc?", new, NULL, false, false);
+		tu_eq_int("Your lstmap did not call the del function on your already allocated lists", num_deletions, 4);
+		free_lst(lst);
+	TEST
+		tu_test_can_crash();
+		t_list* lst = create_lst(5);
+
+		t_list* new = ft_lstmap(lst, NULL, del);
+		if (new)
+		{
+			if (new->content == NULL)
+				compare(lst, new, null_content);
+			else
+				compare(lst, new, clone_content);
+			free_lst(new);
+		}
+		else
+		{
+			tu_ok_message("lstmap returns NULL with null f");
+		}
+		free_lst(lst);
+	TEST
+		tu_test_can_crash();
+		t_list* lst = create_lst(5);
+
+		tu_malloc_null_in(4);
+		t_list* new = ft_lstmap(lst, map_content, NULL);
 		tu_eq_pt("Your lstmap still returns a list even tho your last malloc returned null, are you cheating by using calloc?", new, NULL, false, false);
 		free_lst(lst);
 	TEST_END

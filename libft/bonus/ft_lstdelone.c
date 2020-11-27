@@ -30,6 +30,15 @@ int main(int argc, char *argv[])
 		ft_lstdelone(lst_new(1), del);
 		tu_eq_int("lstdelone did not call the delete function!", num_deletions, 1);
 		tu_eq_pt("lstdelone did not call the delete function.. but it did... what?", deleted[0], (void*)1, false, false);
+	TEST
+		tu_test_can_crash();
+		ft_lstdelone(lst_new(1), NULL);
+		if (tu_free_non_null_count() == 0)
+			tu_ko_message_exit("lstdelone did not free the list, but also did not crash when the del function was null!");
+	TEST
+		tu_test_can_crash();
+		ft_lstdelone(NULL, del);
+		tu_eq_int("lstdelone called the delete function even tho lst == NULL", num_deletions, 0);
 	TEST_END
 
 	return (0);
