@@ -34,6 +34,7 @@ const int num_TestStrings = 5;
 
 // Total unique tests = (num_test_mandatory_flags*num_test_bonus_flags) * (num_test_width_len + num_test_width_len_1 + num_test_width_len_2) * (num_TestInts + num_TestPointers + num_TestChars + num_TestStrings)
 // That equals.. 20160, nice! (40 * 24 * 21)
+// Now multiply that by the number of conversions... and we have 181440 unique tests! (20160 * 9)
 
 static char buff_ft[BUFF_SIZE];
 static char buff_real[BUFF_SIZE];
