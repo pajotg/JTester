@@ -9,6 +9,7 @@
 			"${default}",
 			"${workspaceFolder}/utils/include",
 			"${workspaceFolder}/ft_printf",
+			"${workspaceFolder}/get_next_line",
 			"${workspaceFolder}/../libft",
 			"${workspaceFolder}/../get_next_line",
 			"${workspaceFolder}/../ft_printf",
