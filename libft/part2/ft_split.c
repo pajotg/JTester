@@ -17,30 +17,30 @@ void do_test(char* input, char split, char** expected, char* message, char* msiz
 		tu_eq_str_msize(message, msize_message, result[id], expected[id], true, false);
 		id++;
 	}
-	tu_eq_msize("split msize", result, id * sizeof(char*), true);
+	tu_eq_msize("split msize %i %i", result, (id + 1) * sizeof(char**), true);
 }
 
 int main(int argc, char *argv[])
 {
 	TEST_START
 		char* Expected[6] = { "Breaking", "ft_split", "since", "1981", NULL };
-		do_test("Breaking ft_split since 1981", ' ', Expected, "Basic input", "Basic input msize, what?");
+		do_test("Breaking ft_split since 1981", ' ', Expected, "Basic input", "Basic input msize, what? %i %i");
 	TEST
 		char* Expected[6] = { "Breaking", "ft_split", "since", "1981", NULL };
-		do_test("  Breaking ft_split since 1981  ", ' ', Expected, "split at end and start", "split at end and start msize, what?");
+		do_test("  Breaking ft_split since 1981  ", ' ', Expected, "split at end and start", "split at end and start msize, what? %i %i");
 	TEST
 		char* Expected[1] = { NULL };
-		do_test("     ", ' ', Expected, "only split char", "only split char msize, what?");
+		do_test("     ", ' ', Expected, "only split char", "only split char msize, what? %i %i");
 	TEST
 		char* Expected[2] = { "Breaking ft_split since 1981", NULL };
-		do_test("Breaking ft_split since 1981", '-', Expected, "no split char", "no split char msize, what?");
+		do_test("Breaking ft_split since 1981", '-', Expected, "no split char", "no split char msize, what? %i %i");
 	TEST
 		char* Expected[2] = { NULL };
-		do_test("", '-', Expected, "empty string", "empty string msize, what?");
+		do_test("", '-', Expected, "empty string", "empty string msize, what? %i %i");
 	TEST
 		tu_test_can_crash();
 		char* Expected[2] = { "Evil null terminator", NULL };
-		do_test("Evil null terminator", '\0', Expected, "null terminator split char", "null terminator split char msize, what?");
+		do_test("Evil null terminator", '\0', Expected, "null terminator split char", "null terminator split char msize, what? %i %i");
 	TEST
 		tu_test_can_crash();
 		char** result = ft_split(NULL, '\0');

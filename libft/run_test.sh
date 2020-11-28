@@ -26,6 +26,10 @@ else # figure out what the extra arg means, does it mean a single test? part1? p
 	base_name=$(basename "$test")
 	if [[ "$base_name" == "$test" ]]; then #if we dont have a path specified assume the test is in this directory
 		file=$(find "$DIR" -type f -name "$test")
+		if [[ "${file}" == "" ]]; then # if there is no file with that name, try it with a .c
+			file=$(find "$DIR" -type f -name "$test.c")
+		fi
+
 		if [[ "${file}" ]]; then # if we can find files with that name, test those
 			$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft" "$file"
 		else # otherwise asssume $test contains a folder name
