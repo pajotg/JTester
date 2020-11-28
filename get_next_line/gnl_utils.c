@@ -1,4 +1,4 @@
-#include "test_utils.h"
+#include "gnl_utils.h"
 #include <string.h>
 #include <errno.h>
 #include <stdio.h>
@@ -58,4 +58,18 @@ int tu_create_temp_fd_arr(char** str)
 	}
 	fseek(file, 0, SEEK_SET);	// Mallocs
 	return fileno(file);
+}
+
+void tu_init_static_gnl()
+{
+	int fd = tu_create_temp_fd("Hello world!\nThis is text!");
+
+	char* line = NULL;
+	int ret;
+
+	ret = get_next_line(fd,&line);
+	ret = get_next_line(fd,&line);
+
+	free(line);
+	close(fd);
 }
