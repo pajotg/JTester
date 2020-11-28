@@ -14,7 +14,7 @@ tests_folder="$3"
 utils_lib=$DIR"/utils/utils.a"
 utils_include=$DIR"/utils/include"
 flags="-Wall -Wextra -Werror"
-LIB_PRELOAD="$DIR/utils/PRELOAD/PRELOAD"
+LIB_PRELOAD="$DIR/utils/PRELOAD/PRELOAD.so"
 LIB_PRELOAD_NOP="$DIR/utils/PRELOAD/NOP/libPRELOAD_NOP.so"
 
 mkdir_result=$(mkdir "$DIR/tmp" 2>/dev/null)
@@ -46,12 +46,9 @@ DEF_COLOR=$(printf "\e[0m")
 device=$(uname -s)
 case "${device}" in
 	Linux*)
-		LIB_PRELOAD="$LIB_PRELOAD.so"
 		#echo "Linux detected!"
 		;;
 	Darwin*)
-		#LIB_PRELOAD="$LIB_PRELOAD.dylib"
-		LIB_PRELOAD="$LIB_PRELOAD.so"
 		# echo "OSX detected!"
 		;;
 	*)
@@ -79,13 +76,7 @@ run_test ()
 {
 	test_name=$1
 
-	case "${device}" in
-		Linux*) compile_out=$(cc $flags -o $test_file -I $utils_include $gcc_args $test_name $lib $utils_lib $LIB_PRELOAD_NOP 2>&1);;
-		Darwin*)compile_out=$(cc $flags -o $test_file -I $utils_include $gcc_args $test_name $lib $utils_lib $LIB_PRELOAD_NOP 2>&1);;
-		*)
-			echo "Update run_test case"
-			return;;
-	esac
+	compile_out=$(cc $flags -o $test_file -I $utils_include $gcc_args $test_name $lib $utils_lib $LIB_PRELOAD_NOP 2>&1)
 
 	exit_code=$?
 	base_name=$(basename $test_name)
