@@ -32,6 +32,10 @@ make_result=$(cd $DIR/utils/PRELOAD/NOP; make)
 #echo utils_include $utils_include
 #echo flags $flags
 
+if [[ "$DEBUG_TEST" ]]; then
+	gcc_args="-g $gcc_args"
+fi
+
 OK_COLOR=$(printf "\e[1;32m")
 KO_COLOR=$(printf "\e[1;31m")
 WARN_COLOR=$(printf "\e[1;38;5;208m")
@@ -115,7 +119,8 @@ run_test ()
 		# end with f = no crash
 		# test type:
 		#	x or X: can crash/should crash
-		# after test type result: - or +, in case of - we have -Reason or just -
+		# after test type result: - or +
+		# then we can have a reason or no reason
 		# echo
 		# echo -n "$ret"
 
@@ -204,7 +209,9 @@ run_test ()
 			echo -n "$ERR_COLOR[$ret]$DEF_COLOR"
 		fi
 	done
-	rm $test_file
+	if [[ !"$DEBUG_TEST" ]]; then
+		rm $test_file
+	fi
 	echo
 }
 
