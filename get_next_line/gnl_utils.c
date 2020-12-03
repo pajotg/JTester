@@ -70,6 +70,11 @@ void tu_init_static_gnl()
 	ret = get_next_line(fd,&line);
 	ret = get_next_line(fd,&line);
 
+	#if LAST_LINE_EOF
 	free(line);
+	#else
+	ret = get_next_line(fd,&line);
+	#endif
+
 	close(fd);
 }

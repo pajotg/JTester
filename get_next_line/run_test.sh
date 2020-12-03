@@ -57,6 +57,7 @@ do_tests 32
 do_tests 128
 do_tests 8
 do_tests 2
+do_tests 1
 do_tests 1024
 do_tests 16384
 printf "\e[1;36m--	Tests completed!\e[0m\n"

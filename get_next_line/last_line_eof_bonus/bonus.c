@@ -14,10 +14,8 @@ int main(int argc, char *argv[])
 		int ret;
 		ret = get_next_line(fd1, &line1); tu_check(ret, line1, 1, "This is your first line");
 		ret = get_next_line(fd2, &line2); tu_check(ret, line2, 1, "This is your second line");
-		ret = get_next_line(fd1, &line1); tu_check(ret, line1, 1, "and this is your third!");
-		ret = get_next_line(fd2, &line2); tu_check(ret, line2, 1, "and this is your fourth!");
-		ret = get_next_line(fd1, &line1); tu_check(ret, line1, 0, NULL);
-		ret = get_next_line(fd2, &line2); tu_check(ret, line2, 0, NULL);
+		ret = get_next_line(fd1, &line1); tu_check(ret, line1, 0, "and this is your third!");
+		ret = get_next_line(fd2, &line2); tu_check(ret, line2, 0, "and this is your fourth!");
 		close(fd1);
 		close(fd2);
 		free(line1);
@@ -48,14 +46,10 @@ int main(int argc, char *argv[])
 		ret = get_next_line(fd2, &line); tu_check(ret, line, 1, "bbb");
 		// FD1
 		ret = get_next_line(fd1, &line); tu_check(ret, line, 1, "aaa");
-		ret = get_next_line(fd1, &line); tu_check(ret, line, 1, "");
-		ret = get_next_line(fd1, &line); tu_check(ret, line, 0, NULL);
+		ret = get_next_line(fd1, &line); tu_check(ret, line, 0, "");
 		// FD2
 		ret = get_next_line(fd2, &line); tu_check(ret, line, 1, "bbb");
-		ret = get_next_line(fd2, &line); tu_check(ret, line, 1, "");
-		ret = get_next_line(fd2, &line); tu_check(ret, line, 0, NULL);
-
-
+		ret = get_next_line(fd2, &line); tu_check(ret, line, 0, "");
 
 		close(fd1);
 		close(fd2);
@@ -82,13 +76,11 @@ int main(int argc, char *argv[])
 
 		ret = get_next_line(fd1, &line); tu_check(ret, line, 1, test_strs1[3]);
 		ret = get_next_line(fd1, &line); tu_check(ret, line, 1, test_strs1[4]);
-		ret = get_next_line(fd1, &line); tu_check(ret, line, 1, test_strs1[5]);
-		ret = get_next_line(fd1, &line); tu_check(ret, line, 0, NULL);
+		ret = get_next_line(fd1, &line); tu_check(ret, line, 0, test_strs1[5]);
 
 		ret = get_next_line(fd2, &line); tu_check(ret, line, 1, test_strs2[3]);
 		ret = get_next_line(fd2, &line); tu_check(ret, line, 1, test_strs2[4]);
-		ret = get_next_line(fd2, &line); tu_check(ret, line, 1, test_strs2[5]);
-		ret = get_next_line(fd2, &line); tu_check(ret, line, 0, NULL);
+		ret = get_next_line(fd2, &line); tu_check(ret, line, 0, test_strs2[5]);
 
 		close(fd1);
 		close(fd2);
@@ -106,8 +98,7 @@ int main(int argc, char *argv[])
 		// An invalid fd should not mess up the other valid FD's
 		ret = get_next_line(fd, &line); tu_check(ret, line, 1, test_strs[0]);
 		ret = get_next_line(-1, &line); tu_check(ret, line, -1, NULL);	// There are 2 reasons this can cause an error, either A: you somehow read something, or B: you did not clear line.
-		ret = get_next_line(fd, &line); tu_check(ret, line, 1, test_strs[1]);
-		ret = get_next_line(fd, &line); tu_check(ret, line, 0, NULL);
+		ret = get_next_line(fd, &line); tu_check(ret, line, 0, test_strs[1]);
 
 		try_free(line);
 	TEST_END

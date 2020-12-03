@@ -1,5 +1,4 @@
 #include "gnl_utils.h"
-#include <stdio.h>
 
 int main(int argc, char *argv[])
 {
@@ -10,11 +9,8 @@ int main(int argc, char *argv[])
 		tu_init_static_gnl();
 		tu_malloc_reset();
 
-		int ret;
 		char* line = NULL;
-
-		ret = get_next_line(fd, &line); tu_check(ret, line, 1, test_str);
-		ret = get_next_line(fd, &line); tu_check(ret, line, 0, NULL);
+		int ret = get_next_line(fd, &line); tu_check(ret, line, 0, test_str);
 
 		close(fd);
 		free(line);
@@ -30,9 +26,7 @@ int main(int argc, char *argv[])
 
 		ret = get_next_line(fd, &line); tu_check(ret, line, 1, "Hello World!");
 		ret = get_next_line(fd, &line); tu_check(ret, line, 1, "what an amazing day");
-		ret = get_next_line(fd, &line); tu_check(ret, line, 1, "we are having huh?");
-		ret = get_next_line(fd, &line); tu_check(ret, line, 0, NULL);
-
+		ret = get_next_line(fd, &line); tu_check(ret, line, 0, "we are having huh?");
 		close(fd);
 		free(line);
 	TEST
@@ -51,8 +45,7 @@ int main(int argc, char *argv[])
 		ret = get_next_line(fd, &line); tu_check(ret, line, 1, "aa");
 		ret = get_next_line(fd, &line); tu_check(ret, line, 1, "aaa");
 		ret = get_next_line(fd, &line); tu_check(ret, line, 1, "aaa");
-		ret = get_next_line(fd, &line); tu_check(ret, line, 1, "");
-		ret = get_next_line(fd, &line); tu_check(ret, line, 0, NULL);
+		ret = get_next_line(fd, &line); tu_check(ret, line, 0, "");
 
 		close(fd);
 		free(line);
@@ -66,8 +59,7 @@ int main(int argc, char *argv[])
 		char* line = NULL;
 		int ret;
 
-		ret = get_next_line(fd, &line); tu_check(ret, line, 1, test_str);
-		ret = get_next_line(fd, &line); tu_check(ret, line, 0, NULL);
+		ret = get_next_line(fd, &line); tu_check(ret, line, 0, test_str);
 
 		close(fd);
 		free(line);
@@ -86,8 +78,7 @@ int main(int argc, char *argv[])
 		ret = get_next_line(fd, &line); tu_check(ret, line, 1, test_strs[2]);
 		ret = get_next_line(fd, &line); tu_check(ret, line, 1, test_strs[3]);
 		ret = get_next_line(fd, &line); tu_check(ret, line, 1, test_strs[4]);
-		ret = get_next_line(fd, &line); tu_check(ret, line, 1, test_strs[5]);
-		ret = get_next_line(fd, &line); tu_check(ret, line, 0, NULL);
+		ret = get_next_line(fd, &line); tu_check(ret, line, 0, test_strs[5]);
 
 		close(fd);
 		free(line);
