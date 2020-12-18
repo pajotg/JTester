@@ -10,7 +10,7 @@ void tu_check(int ret, char* line, int expected_ret, char* expected_line)
 		if (expected_ret == 0)
 			tu_ko_message_exit("your get_next_line did not return a eof when it should have done so! returned: %i", ret);
 		else
-			tu_ko_message_exit("your get_next_line did not return a 1 when it should have done so! returned: %i", ret);
+			tu_ko_message_exit("your get_next_line did not return a %i when it should have done so! returned: %i", expected_ret, ret);
 	}
 	if ((line == NULL) != (expected_line == NULL))
 	{
@@ -22,6 +22,7 @@ void tu_check(int ret, char* line, int expected_ret, char* expected_line)
 		if (expected_line != NULL && strcmp(line, expected_line))
 			tu_ko_message_exit("your get_next_line did not read the correct line: %s expected: %s", line, expected_line);
 	}
+	try_free(line);
 }
 
 int tu_create_temp_fd(char* str)
@@ -65,16 +66,11 @@ void tu_init_static_gnl()
 	int fd = tu_create_temp_fd("Hello world!\nThis is text!");
 
 	char* line = NULL;
-	int ret;
 
-	ret = get_next_line(fd,&line);
-	ret = get_next_line(fd,&line);
+	get_next_line(fd,&line);
+	get_next_line(fd,&line);
 
-	#if LAST_LINE_EOF
 	free(line);
-	#else
-	ret = get_next_line(fd,&line);
-	#endif
 
 	close(fd);
 }
