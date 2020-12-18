@@ -1,7 +1,4 @@
 #include "gnl_utils.h"
-#include <string.h>
-#include <errno.h>
-#include <stdio.h>
 
 void tu_check(int ret, char* line, int expected_ret, char* expected_line)
 {

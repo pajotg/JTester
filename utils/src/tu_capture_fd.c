@@ -1,7 +1,6 @@
 #include "test_utils.h"
 
 #include <stdio.h>
-#include <unistd.h>
 
 void tu_start_capture_fd(int fd, capture_data* ref)
 {
