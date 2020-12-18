@@ -55,6 +55,9 @@ get_includes() {
 
 			if [[ "$header" == "."* ]]; then
 				get_includes "$dir_name/$header"
+			elif [[ "$header" == *"/"* ]]; then
+				# i dont know what to do with this, sometimes this is a system file, like "malloc/malloc.h", or maybe you are putting c files with your header directory using a relative path? (why would you do that?)
+				echo "Could not find header: $header in $file_name!"
 			else
 				found=$(find $include_folder -type f -name "$header" | sort)
 				if [[ "${found}" ]]; then
