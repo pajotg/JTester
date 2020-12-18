@@ -40,6 +40,7 @@ void tu_ok_message(char *message, ...)
 	va_list lst;
 	va_start(lst, message);
 	tu_vok_message(message, lst);
+	va_end(lst);
 }
 
 void tu_ko()
@@ -60,6 +61,7 @@ void tu_ko_message(char *message, ...)
 	va_list lst;
 	va_start(lst, message);
 	tu_vko_message(message, lst);
+	va_end(lst);
 }
 
 void tu_warning()
@@ -80,6 +82,7 @@ void tu_warning_message(char *message, ...)
 	va_list lst;
 	va_start(lst, message);
 	tu_vwarning_message(message, lst);
+	va_end(lst);
 }
 
 // output with exit
@@ -101,6 +104,7 @@ void tu_ok_message_exit(char *message, ...)
 	va_list lst;
 	va_start(lst, message);
 	tu_vok_message_exit(message, lst);
+	va_end(lst);
 }
 
 void tu_ko_exit()
@@ -121,6 +125,7 @@ void tu_ko_message_exit(char *message, ...)
 	va_list lst;
 	va_start(lst, message);
 	tu_vko_message_exit(message, lst);
+	va_end(lst);
 }
 
 void tu_warning_exit()
@@ -141,4 +146,5 @@ void tu_warning_message_exit(char* message, ...)
 	va_list lst;
 	va_start(lst, message);
 	tu_vwarning_message_exit(message, lst);
+	va_end(lst);
 }

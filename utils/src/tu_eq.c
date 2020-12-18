@@ -21,22 +21,31 @@ void tu_eq_msize(char* message, void* got, int expected, bool free_got)
 	try_free(correct_size);	// Not that it really matters for such a short test programm, oh well
 }
 
-void tu_eq_int(char* message, int got, int expected)
+void tu_eq_int(char* message, int got, int expected, ...)
 {
 	if (got != expected) {
-		tu_ko_message_exit(message);
+		va_list lst;
+		va_start(lst, expected);
+		tu_vko_message_exit(message, lst);
+		va_end(lst);
 	}
 }
-void tu_eq_char(char* message, char got, char expected)
+void tu_eq_char(char* message, char got, char expected, ...)
 {
 	if (got != expected) {
-		tu_ko_message_exit(message);
+		va_list lst;
+		va_start(lst, expected);
+		tu_vko_message_exit(message, lst);
+		va_end(lst);
 	}
 }
-void tu_eq_bool(char* message, bool got, bool expected)
+void tu_eq_bool(char* message, bool got, bool expected, ...)
 {
 	if (got != expected) {
-		tu_ko_message_exit(message);
+		va_list lst;
+		va_start(lst, expected);
+		tu_vko_message_exit(message, lst);
+		va_end(lst);
 	}
 }
 
