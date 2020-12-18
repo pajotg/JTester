@@ -14,7 +14,7 @@ prev_mandatory_out=""
 prev_bonus_out=""
 
 # test!
-$DIR/../duplicate_include "$path_to_gnl" "$path_to_gnl"	# Also check duplicate includes
+$DIR/../duplicate_include.sh "$path_to_gnl" "$path_to_gnl"	# Also check duplicate includes
 
 # Detect number of static variables
 bonus_static_count=$(cat $path_to_gnl/get_next_line_bonus.c | egrep "static" | egrep -v "\(" | wc -l)

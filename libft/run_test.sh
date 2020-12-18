@@ -16,7 +16,7 @@ make_result=$(cd "$path_to_libft"; make bonus)
 
 # test!
 if [ $# == 1 ]; then # No extra args? run all the tests!
-	$DIR/../duplicate_include "$path_to_libft" "$path_to_libft"	# Also check duplicate includes
+	$DIR/../duplicate_include.sh "$path_to_libft" "$path_to_libft"	# Also check duplicate includes
 	printf "\e[1;36m--[[        Part 1        ]]--\e[0m\n"
 	$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft" "$DIR/part1"
 	printf "\e[1;36m--[[        Part 2        ]]--\e[0m\n"
