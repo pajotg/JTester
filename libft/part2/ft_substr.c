@@ -10,15 +10,15 @@ void do_test(char* input, char* expected, int start, int len, char* message, cha
 int main(int argc, char *argv[])
 {
 	TEST_START
-		do_test("Hello World!", "llo Wor", 2, 7, "Basic input", "Basic input memsize, what?");
+		do_test("Hello World!", "llo Wor", 2, 7, "Basic input", "Basic input malloc size got: %i expected: %i, what?");
 	TEST
-		do_test("Hello World!", "", 2, 0, "Zero len", "Zero len memsize, what?");
+		do_test("Hello World!", "", 2, 0, "Zero len", "Zero len malloc size got: %i expected: %i, what?");
 	TEST
-		do_test("Hello World!", "", 25, 5, "Out of range", "Out of range memsize, what?");
+		do_test("Hello World!", "", 25, 5, "Out of range", "Out of range malloc size got: %i expected: %i, what?");
 	TEST
-		do_test("Hello World!", "Hello World!", 0, 1024, "ft_substr with a length > strlen", "len = 1024, strlen(input) = 12, malloc size != strlen(output)");
+		do_test("Hello World!", "Hello World!", 0, 1024, "ft_substr with a length > strlen", "len = 1024, strlen(input) = 12, malloc size != strlen(output) got: %i expected: %i");
 	TEST
-		do_test("Hello World!", "ello World!", 1, 13, "ft_substr with a start+length > strlen", "len = 13, strlen(input) = 12, malloc size != strlen(output)");
+		do_test("Hello World!", "ello World!", 1, 13, "ft_substr with a start+length > strlen", "len = 13, strlen(input) = 12, malloc size != strlen(output) got: %i expected: %i");
 	TEST
 		for (int i = 0; i < 250; i++)
 		{
