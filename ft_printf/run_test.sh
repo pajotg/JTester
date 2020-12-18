@@ -14,6 +14,6 @@ make_result=$(make -C $path_to_printf)
 make_result=$(make bonus -C $path_to_printf)
 
 # test!
-$DIR/../duplicate_include.sh "$path_to_printf" "$path_to_printf"	# Also check duplicate includes
+$DIR/../duplicate_include.sh "$path_to_printf"	# Also check duplicate includes
 
 $DIR/../run_test.sh "$DIR/printf_test_utils.c $path_to_printf/libftprintf.a" "-I $DIR" "$DIR/tests"

@@ -1,13 +1,17 @@
 #!/bin/bash
 
-if [ $# != 2 ]; then
-	echo -e "\e[1;91mUsage: duplicate_include.sh [include] [tests_folder/file]\e[0m"
+if [[ $# -gt 2 || $# -eq 0 ]]; then
+	echo -e "\e[1;91mUsage: duplicate_include.sh [include] {tests_folder/file}\e[0m"
 	return 1 2>/dev/null
 	exit 1
 fi
 
 include_folder="$1"
-tests_folder="$2"
+if [[ $# -gt 1 ]]; then
+	tests_folder="$2"
+else
+	tests_folder="$1"
+fi
 
 # sets the includes value
 get_includes_raw() {
