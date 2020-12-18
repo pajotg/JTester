@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 	TEST
 		tu_eq_str("empty needle", ft_strnstr("Hello World", "", 5), "Hello World", false, false);
 	TEST
-		tu_eq_str("empty needle len 0", ft_strnstr("Hello World", "", 0), "Hello World", false, false);
+		tu_eq_str("empty needle with length 0", ft_strnstr("Hello World", "", 0), "Hello World", false, false);
 	TEST
 		ft_strnstr(NULL, "", 5);
 	TEST

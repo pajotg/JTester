@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 			tu_ko_message_exit("Wrong number of chars printed! expected %i but got %i: \"%s\"", 126, num_chars, buff);
 		for (char c = 1; c < 127; c++)
 			if (buff[c-1] != c)
-				tu_ko_message_exit("Wrong char printed: %s", buff);
+				tu_ko_message_exit("Wrong char printed: at: %i, expected: %c but got: %c %s", buff, c, c, buff[c-1]);
 	TEST_END
 	return (0);
 }

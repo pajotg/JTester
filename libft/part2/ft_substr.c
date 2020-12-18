@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 	TEST
 		do_test("Hello World!", "", 2, 0, "Zero len", "Zero len malloc size got: %i expected: %i, what?");
 	TEST
-		do_test("Hello World!", "", 25, 5, "Out of range", "Out of range malloc size got: %i expected: %i, what?");
+		do_test("Hello World!", "", 25, 5, "Out of range start", "Out of range malloc size got: %i expected: %i, what?");
 	TEST
 		do_test("Hello World!", "Hello World!", 0, 1024, "ft_substr with a length > strlen", "len = 1024, strlen(input) = 12, malloc size != strlen(output) got: %i expected: %i");
 	TEST

@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 	TEST
 		do_test("Hello World", "", "Hello World", "Empty set", "Empty set malloc size got: %i expected: %i, what?");
 	TEST
-		do_test("----------------------------------------------------------Hello World----------------------------------------------------------", "-", "Hello World", "a bunch of - at the start and end", "your malloc does not use minimum memory");
+		do_test("----------------------------------------------------------Hello World----------------------------------------------------------", "-", "Hello World", "a ton of split characters at the start and end of the input", "your malloc does not use minimum memory");
 	TEST
 		do_test("Hello World", "Hello World", "", "trim(x,x) != \"\"", "trim(x,x) malloc size got: %i expected: %i, what?");
 	TEST

@@ -27,27 +27,27 @@ int main(int argc, char *argv[])
 		do_test("Breaking ft_split since 1981", ' ', Expected, "Basic input", "Basic input malloc size, what? got: %i expected: %i");
 	TEST
 		char* Expected[6] = { "Breaking", "ft_split", "since", "1981", NULL };
-		do_test("  Breaking ft_split since 1981  ", ' ', Expected, "split at end and start", "split at end and start malloc size, what? got: %i expected: %i");
+		do_test("  Breaking ft_split since 1981  ", ' ', Expected, "split char at end and start", "split at end and start malloc size, what? got: %i expected: %i");
 	TEST
 		char* Expected[1] = { NULL };
-		do_test("     ", ' ', Expected, "only split char", "only split char malloc size, what? got: %i expected: %i");
+		do_test("     ", ' ', Expected, "input is only split char", "only split char malloc size, what? got: %i expected: %i");
 	TEST
 		char* Expected[2] = { "Breaking ft_split since 1981", NULL };
-		do_test("Breaking ft_split since 1981", '-', Expected, "no split char", "no split char malloc size, what? got: %i expected: %i");
+		do_test("Breaking ft_split since 1981", '-', Expected, "no split char found in input", "no split char malloc size, what? got: %i expected: %i");
 	TEST
 		char* Expected[2] = { NULL };
-		do_test("", '-', Expected, "empty string", "empty string malloc size, what? got: %i expected: %i");
+		do_test("", '-', Expected, "empty input string", "empty string malloc size, what? got: %i expected: %i");
 	TEST
 		tu_test_can_crash();
 		char* Expected[2] = { "Evil null terminator", NULL };
-		do_test("Evil null terminator", '\0', Expected, "null terminator split char", "null terminator split char malloc size, what? got: %i expected: %i");
+		do_test("Evil null terminator", '\0', Expected, "null terminator as split char", "null terminator split char malloc size, what? got: %i expected: %i");
 	TEST
 		tu_test_can_crash();
 		char** result = ft_split(NULL, '\0');
 		if (result != NULL)
 		{
 			if (result[0] != NULL)
-				tu_ko_message_exit("Your ft_split does not return null or a array of null when given NULL and NULL");
+				tu_ko_message_exit("Your ft_split does not return null or a array of null, or crash when given input NULL and split char \\0");
 			free(result);
 		}
 	TEST
@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
 		if (result != NULL)
 		{
 			if (result[0] != NULL)
-				tu_ko_message_exit("Your ft_split does not return null or a array of null when given an empty string and NULL");
+				tu_ko_message_exit("Your ft_split does not return null or a array of null when given an empty string and split char \\0");
 			free(result);
 		}
 	TEST

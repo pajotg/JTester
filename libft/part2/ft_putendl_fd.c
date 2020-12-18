@@ -29,12 +29,12 @@ int main(int argc, char *argv[])
 			if (num_chars != length + 1)
 			{
 				tu_stop_capture_fd(&data);
-				tu_ko_message_exit("Wrong number of random characters printed");
+				tu_ko_message_exit("Wrong number of random characters printed Expected \"%s\" but got \"%.*s\"", str, num_chars, buff);
 			}
 			if (strncmp(buff, str, length) != 0 || buff[length] != '\n')
 			{
 				tu_stop_capture_fd(&data);
-				tu_ko_message_exit("Wrong random string printed");
+				tu_ko_message_exit("Wrong random string printed Expected \"%s\" but got \"%.*s\"", str, num_chars, buff);
 			}
 			free(str);
 		}
