@@ -69,6 +69,7 @@ get_includes() {
 					get_includes "$found"
 				else
 					echo "Could not find header: $header in $file_name!"
+					includes=() # Assume this header contains nothing
 				fi
 			fi
 
