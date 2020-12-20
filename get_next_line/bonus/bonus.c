@@ -97,8 +97,9 @@ int main(int argc, char *argv[])
 		ret = get_next_line(fd, &line); tu_check(ret, line, 1, test_strs[0]);
 		line = original;
 		ret = get_next_line(-1, &line);
-		if (line != original)	// Setting to null and doing nothing is fine
-			tu_check(ret, line, -1, NULL);
+		if (line == original)	// Setting to null and doing nothing is fine, but NO STRINGS!
+			line = NULL;
+		tu_check(ret, line, -1, NULL);
 		ret = get_next_line(fd, &line); tu_check(ret, line, 0, test_strs[1]);
 		free(original);
 	TEST_END
