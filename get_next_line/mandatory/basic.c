@@ -92,6 +92,9 @@ int main(int argc, char *argv[])
 		tu_check(ret, line, -1, NULL);
 		try_free(original);
 	TEST
+		int fd = tu_create_temp_fd("");
+		close(fd);
+
 		tu_init_static_gnl();
 		tu_malloc_reset();
 
@@ -99,7 +102,7 @@ int main(int argc, char *argv[])
 		char* line = original;
 		int ret;
 
-		ret = get_next_line(42, &line);
+		ret = get_next_line(fd, &line);
 		if (line == original)
 			tu_warning_message_exit("Your get next line does not clear line with a invalid FD!");
 		tu_check(ret, line, -1, NULL);

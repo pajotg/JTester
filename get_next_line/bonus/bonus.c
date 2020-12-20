@@ -88,13 +88,19 @@ int main(int argc, char *argv[])
 		tu_init_static_gnl();
 		tu_malloc_reset();
 
+		char* original = tu_rand_str(16);
+
 		char* line = NULL;
 		int ret;
 
 		// An invalid fd should not mess up the other valid FD's
 		ret = get_next_line(fd, &line); tu_check(ret, line, 1, test_strs[0]);
-		ret = get_next_line(-1, &line); tu_check(ret, line, -1, NULL);	// There are 2 reasons this can cause an error, either A: you somehow read something, or B: you did not clear line.
+		line = original;
+		ret = get_next_line(-1, &line);
+		if (line != original)	// Setting to null and doing nothing is fine
+			tu_check(ret, line, -1, NULL);
 		ret = get_next_line(fd, &line); tu_check(ret, line, 0, test_strs[1]);
+		free(original);
 	TEST_END
 	return (0);
 }
