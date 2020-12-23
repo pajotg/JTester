@@ -23,7 +23,7 @@ void tu_test_finish()
 
 	if (!*get_has_written_result())
 		if (tu_malloc_non_null_count() != tu_free_non_null_count())
-			tu_ko_message("Leaks detected %i != %i", tu_malloc_non_null_count(), tu_free_non_null_count());
+			tu_ko_message("Leaks detected! mallocs != frees (%i != %i)", tu_malloc_non_null_count(), tu_free_non_null_count());
 		else if (tu_free_non_null_count() != tu_free_count())
 			tu_warning_message("Null pointer free detected!");
 		else
