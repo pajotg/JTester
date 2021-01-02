@@ -1,4 +1,5 @@
 #include "test_utils_printf.h"
+#include <math.h>
 
 #define BUFF_SIZE 1024
 
@@ -22,6 +23,9 @@ const int num_test_width_len_2 = 1;
 
 int TestInts[] = { -1, 0, 1, 2147483647, -2147483648 };
 const int num_TestInts = 5;
+
+float TestFloats[] = { -1, 0, 1, 23012308.512352, 12308.197279, -823671.23, INFINITY, NAN, -INFINITY, -NAN, M_PI };
+const int num_TestFloats = 11;
 
 void* TestPointers[] = { NULL, &TestInts, (void*)5, (void*)1892391235 };
 const int num_TestPointers = 5;
@@ -109,3 +113,7 @@ CREATE_TEST3(iis,%i %i %s,int,int,char*)
 CREATE_TEST1(p,%p,void*)
 CREATE_TEST2(ip,%i %p,int,void*)
 CREATE_TEST3(iip,%i %i %p,int,int,void*)
+
+CREATE_TEST1(f,%f,float)
+CREATE_TEST2(if,%i %f,int,float)
+CREATE_TEST3(iif,%i %i %f,int,int,float)

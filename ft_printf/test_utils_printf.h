@@ -18,6 +18,8 @@ extern const int num_test_width_len_1;
 extern char* test_width_len_2[];
 extern const int num_test_width_len_2;
 
+extern float TestFloats[];
+extern const int num_TestFloats;
 extern int TestInts[];
 extern const int num_TestInts;
 extern void* TestPointers[];
@@ -44,5 +46,9 @@ void do_test_iis(capture_data* data, char* str, int _1, int _2, char* _3);
 void do_test_p(capture_data* data, char* str, void* _1);
 void do_test_ip(capture_data* data, char* str, int _1, void* _2);
 void do_test_iip(capture_data* data, char* str, int _1, int _2, void* _3);
+
+void do_test_f(capture_data* data, char* str, float _1);
+void do_test_if(capture_data* data, char* str, int _1, float _2);
+void do_test_iif(capture_data* data, char* str, int _1, int _2, float _3);
 
 #endif

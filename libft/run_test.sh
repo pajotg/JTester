@@ -18,11 +18,11 @@ make_result=$(cd "$path_to_libft"; make bonus)
 if [ $# == 1 ]; then # No extra args? run all the tests!
 	$DIR/../duplicate_include.sh "$path_to_libft"	# Also check duplicate includes
 	printf "\e[1;36m--[[        Part 1        ]]--\e[0m\n"
-	$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft" "$DIR/part1"
+	$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft -I $path_to_libft/include" "$DIR/part1"
 	printf "\e[1;36m--[[        Part 2        ]]--\e[0m\n"
-	$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft" "$DIR/part2"
+	$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft -I $path_to_libft/include" "$DIR/part2"
 	printf "\e[1;36m--[[        Bonus         ]]--\e[0m\n"
-	$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft" "$DIR/bonus"
+	$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft -I $path_to_libft/include" "$DIR/bonus"
 else # figure out what the extra arg means, does it mean a single test? part1? part2? ft_is*? a external test (not in the test directory)?
 	base_name=$(basename "$test")
 	if [[ "$base_name" == "$test" ]]; then #if we dont have a path specified assume the test is in this directory
@@ -32,12 +32,12 @@ else # figure out what the extra arg means, does it mean a single test? part1? p
 		fi
 
 		if [[ "${file}" ]]; then # if we can find files with that name, test those
-			$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft" "$file"
+			$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft -I $path_to_libft/include" "$file"
 		else # otherwise asssume $test contains a folder name
-			$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft" "$DIR/$test"
+			$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft -I $path_to_libft/include" "$DIR/$test"
 		fi
 	else #we specified a path, asssume a external test
-		$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft" "$test"
+		$DIR/../run_test.sh "$path_to_libft/libft.a" "-I $path_to_libft -I $path_to_libft/include" "$test"
 	fi
 fi
 
