@@ -114,6 +114,9 @@ void try_free(void* pt);
 void tu_nop_int(int value);
 void tu_nop_pt(void* value);
 
+extern void tu_malloc_enable();
+extern void tu_malloc_disable();
+extern bool tu_malloc_is_enabled();
 extern void tu_malloc_reset();
 extern int tu_malloc_count();
 extern int tu_free_count();

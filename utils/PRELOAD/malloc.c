@@ -36,6 +36,21 @@ static int malloc_stop_id = -1;
 static bool malloc_random = false;
 static bool free_random = false;
 
+static bool enabled = true;
+
+void tu_malloc_enable()
+{
+	enabled = true;
+}
+void tu_malloc_disable()
+{
+	enabled = false;
+}
+bool tu_malloc_is_enabled()
+{
+	return enabled;
+}
+
 void tu_malloc_reset()
 {
 	malloc_count = 0;
@@ -106,9 +121,12 @@ void* malloc(size_t bytes)
 		return bootstrap_malloc(bytes);
 	#endif
 
-	malloc_count++;
-	if (malloc_count == malloc_stop_id) {
-		return (NULL);
+	if (enabled)
+	{
+		malloc_count++;
+		if (malloc_count == malloc_stop_id) {
+			return (NULL);
+		}
 	}
 
 	#ifdef USE_INTERSPOSE
@@ -116,7 +134,7 @@ void* malloc(size_t bytes)
 	#else
 	void* pt = original_malloc(bytes);
 	#endif
-	if (pt)
+	if (pt && enabled)
 	{
 		malloc_non_null_count++;
 		if (malloc_random)
@@ -140,11 +158,14 @@ void free(void* pt)
 		return ;
 	#endif
 
-	free_count++;
-	if (pt != NULL)	// Freeing a null pointer does nothing, dont count towards the free count
-		free_non_null_count++;
+	if (enabled)
+	{
+		free_count++;
+		if (pt != NULL)	// Freeing a null pointer does nothing, dont count towards the free count
+			free_non_null_count++;
+	}
 
-	if (free_random && pt != NULL)
+	if (free_random && pt != NULL && enabled)
 	{
 		size_t bytes = MALLOC_SIZE(pt);
 		for (size_t i = 0; i < bytes; i++)

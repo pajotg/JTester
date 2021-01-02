@@ -7,11 +7,12 @@ CREATE_TMP_VPRINTF(tmp_sprintf,1024)
 
 int main(int argc, char *argv[])
 {
+	tu_malloc_disable();
 	TEST_START
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test(&data, "%%");
-		tu_malloc_reset();	// Static variables...
+		tu_malloc_enable();
 		for (int prefix_id = 0; prefix_id < num_test_mandatory_flags; prefix_id++)
 		{
 			char* prefix = test_mandatory_flags[prefix_id];
@@ -25,12 +26,13 @@ int main(int argc, char *argv[])
 		}
 		do_test(&data, "%2%%5%%.2%");
 		do_test(&data, "Hey %% %% %% there!");
+		tu_malloc_disable();
 		tu_stop_capture_fd(&data);
 	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test_i(&data, "%c", 'A');
-		tu_malloc_reset();	// Static variables...
+		tu_malloc_enable();
 		for (int i = 0; i < num_TestChars; i++)
 		{
 			char c = TestChars[i];
@@ -46,12 +48,13 @@ int main(int argc, char *argv[])
 					do_test_iii(&data, tmp_sprintf("%%%s%sc", prefix, test_width_len_2[i]), tu_rand_range(-5, 5), tu_rand_range(-5, 5), c);
 			}
 		}
+		tu_malloc_disable();
 		tu_stop_capture_fd(&data);
 	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test_i(&data, "%i", 5);
-		tu_malloc_reset();	// Static variables...
+		tu_malloc_enable();
 		for (int i = 0; i < num_TestInts; i++)
 		{
 			int c = TestInts[i];
@@ -67,12 +70,13 @@ int main(int argc, char *argv[])
 					do_test_iii(&data, tmp_sprintf("%%%s%si", prefix, test_width_len_2[i]), tu_rand_range(-5, 5), tu_rand_range(-5, 5), c);
 			}
 		}
+		tu_malloc_disable();
 		tu_stop_capture_fd(&data);
 	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test_p(&data, "%p", NULL);
-		tu_malloc_reset();	// Static variables...
+		tu_malloc_enable();
 		for (int i = 0; i < num_TestPointers; i++)
 		{
 			void* c = TestPointers[i];
@@ -88,12 +92,13 @@ int main(int argc, char *argv[])
 					do_test_iip(&data, tmp_sprintf("%%%s%sp", prefix, test_width_len_2[i]), tu_rand_range(-5, 5), tu_rand_range(-5, 5), c);
 			}
 		}
+		tu_malloc_disable();
 		tu_stop_capture_fd(&data);
 	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test_p(&data, "%d", NULL);
-		tu_malloc_reset();	// Static variables...
+		tu_malloc_enable();
 		for (int i = 0; i < num_TestInts; i++)
 		{
 			int c = TestInts[i];
@@ -109,12 +114,13 @@ int main(int argc, char *argv[])
 					do_test_iii(&data, tmp_sprintf("%%%s%sd", prefix, test_width_len_2[i]), tu_rand_range(-5, 5), tu_rand_range(-5, 5), c);
 			}
 		}
+		tu_malloc_disable();
 		tu_stop_capture_fd(&data);
 	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test_p(&data, "%x", NULL);
-		tu_malloc_reset();	// Static variables...
+		tu_malloc_enable();
 		for (int i = 0; i < num_TestInts; i++)
 		{
 			int c = TestInts[i];
@@ -130,12 +136,13 @@ int main(int argc, char *argv[])
 					do_test_iii(&data, tmp_sprintf("%%%s%sx", prefix, test_width_len_2[i]), tu_rand_range(-5, 5), tu_rand_range(-5, 5), c);
 			}
 		}
+		tu_malloc_disable();
 		tu_stop_capture_fd(&data);
 	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test_p(&data, "%X", NULL);
-		tu_malloc_reset();	// Static variables...
+		tu_malloc_enable();
 		for (int i = 0; i < num_TestInts; i++)
 		{
 			int c = TestInts[i];
@@ -151,12 +158,13 @@ int main(int argc, char *argv[])
 					do_test_iii(&data, tmp_sprintf("%%%s%sX", prefix, test_width_len_2[i]), tu_rand_range(-5, 5), tu_rand_range(-5, 5), c);
 			}
 		}
+		tu_malloc_disable();
 		tu_stop_capture_fd(&data);
 	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test_p(&data, "%u", NULL);
-		tu_malloc_reset();	// Static variables...
+		tu_malloc_enable();
 		for (int i = 0; i < num_TestInts; i++)
 		{
 			int c = TestInts[i];
@@ -172,12 +180,13 @@ int main(int argc, char *argv[])
 					do_test_iii(&data, tmp_sprintf("%%%s%su", prefix, test_width_len_2[i]), tu_rand_range(-5, 5), tu_rand_range(-5, 5), c);
 			}
 		}
+		tu_malloc_disable();
 		tu_stop_capture_fd(&data);
 	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test_p(&data, "%s", NULL);
-		tu_malloc_reset();	// Static variables...
+		tu_malloc_enable();
 		for (int i = 0; i < num_TestStrings; i++)
 		{
 			char* c = TestStrings[i];
@@ -192,6 +201,7 @@ int main(int argc, char *argv[])
 					do_test_iis(&data, tmp_sprintf("%%%s%ss", prefix, test_width_len_2[i]), tu_rand_range(-5, 5), tu_rand_range(-5, 5), c);
 			}
 		}
+		tu_malloc_disable();
 		tu_stop_capture_fd(&data);
 	TEST_END
 	return (0);

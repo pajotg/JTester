@@ -4,11 +4,12 @@ CREATE_TMP_VPRINTF(tmp_sprintf,1024)
 
 int main(int argc, char *argv[])
 {
+	tu_malloc_disable();
 	TEST_START
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test(&data, "%%");
-		tu_malloc_reset();	// Static variables...
+		tu_malloc_enable();
 		for (int i = 0; i < num_TestFloats; i++)
 		{
 			float v = TestFloats[i];
@@ -24,12 +25,13 @@ int main(int argc, char *argv[])
 					do_test_iif(&data, tmp_sprintf("%%%s%s%f", prefix, test_width_len_2[i]), tu_rand_range(-5, 5), tu_rand_range(-5, 5), v);
 			}
 		}
+		tu_malloc_disable();
 		tu_stop_capture_fd(&data);
 	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test(&data, "%%");
-		tu_malloc_reset();	// Static variables...
+		tu_malloc_enable();
 		for (int i = 0; i < num_TestFloats; i++)
 		{
 			float v = TestFloats[i];
@@ -45,12 +47,13 @@ int main(int argc, char *argv[])
 					do_test_iif(&data, tmp_sprintf("%%%s%s%g", prefix, test_width_len_2[i]), tu_rand_range(-5, 5), tu_rand_range(-5, 5), v);
 			}
 		}
+		tu_malloc_disable();
 		tu_stop_capture_fd(&data);
 	TEST
 		capture_data data;
 		tu_start_capture_fd(STDOUT_FILENO, &data);
 		do_test(&data, "%%");
-		tu_malloc_reset();	// Static variables...
+		tu_malloc_enable();
 		for (int i = 0; i < num_TestFloats; i++)
 		{
 			float v = TestFloats[i];
@@ -66,6 +69,7 @@ int main(int argc, char *argv[])
 					do_test_iif(&data, tmp_sprintf("%%%s%s%e", prefix, test_width_len_2[i]), tu_rand_range(-5, 5), tu_rand_range(-5, 5), v);
 			}
 		}
+		tu_malloc_disable();
 		tu_stop_capture_fd(&data);
 	TEST_END
 	return (0);

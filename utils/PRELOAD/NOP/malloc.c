@@ -8,6 +8,10 @@ void error()
 	exit(1);
 }
 
+void tu_malloc_enable() { error(); };
+void tu_malloc_disable() { error(); };
+bool tu_malloc_is_enabled() { error(); return -1; }
+
 void tu_malloc_reset() { error(); };
 int tu_malloc_count() { error(); return -1; }
 int tu_malloc_non_null_count() { error(); return -1; }
