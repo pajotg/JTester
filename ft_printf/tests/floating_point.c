@@ -18,11 +18,11 @@ int main(int argc, char *argv[])
 				char* prefix = test_mandatory_flags[prefix_id];
 
 				for (int i = 0; i < num_test_width_len; i++)
-					do_test_f(&data, tmp_sprintf("%%%s%s%f", prefix, test_width_len[i]), v);
+					do_test_f(&data, tmp_sprintf("%%%s%sf", prefix, test_width_len[i]), v);
 				for (int i = 0; i < num_test_width_len_1; i++)
-					do_test_if(&data, tmp_sprintf("%%%s%s%f", prefix, test_width_len_1[i]), tu_rand_range(-5, 5), v);
+					do_test_if(&data, tmp_sprintf("%%%s%sf", prefix, test_width_len_1[i]), tu_rand_range(-5, 5), v);
 				for (int i = 0; i < num_test_width_len_2; i++)
-					do_test_iif(&data, tmp_sprintf("%%%s%s%f", prefix, test_width_len_2[i]), tu_rand_range(-5, 5), tu_rand_range(-5, 5), v);
+					do_test_iif(&data, tmp_sprintf("%%%s%sf", prefix, test_width_len_2[i]), tu_rand_range(-5, 5), tu_rand_range(-5, 5), v);
 			}
 		}
 		tu_malloc_disable();
@@ -40,11 +40,11 @@ int main(int argc, char *argv[])
 				char* prefix = test_mandatory_flags[prefix_id];
 
 				for (int i = 0; i < num_test_width_len; i++)
-					do_test_f(&data, tmp_sprintf("%%%s%s%g", prefix, test_width_len[i]), v);
+					do_test_f(&data, tmp_sprintf("%%%s%sg", prefix, test_width_len[i]), v);
 				for (int i = 0; i < num_test_width_len_1; i++)
-					do_test_if(&data, tmp_sprintf("%%%s%s%g", prefix, test_width_len_1[i]), tu_rand_range(-5, 5), v);
+					do_test_if(&data, tmp_sprintf("%%%s%sg", prefix, test_width_len_1[i]), tu_rand_range(-5, 5), v);
 				for (int i = 0; i < num_test_width_len_2; i++)
-					do_test_iif(&data, tmp_sprintf("%%%s%s%g", prefix, test_width_len_2[i]), tu_rand_range(-5, 5), tu_rand_range(-5, 5), v);
+					do_test_iif(&data, tmp_sprintf("%%%s%sg", prefix, test_width_len_2[i]), tu_rand_range(-5, 5), tu_rand_range(-5, 5), v);
 			}
 		}
 		tu_malloc_disable();
@@ -62,11 +62,11 @@ int main(int argc, char *argv[])
 				char* prefix = test_mandatory_flags[prefix_id];
 
 				for (int i = 0; i < num_test_width_len; i++)
-					do_test_f(&data, tmp_sprintf("%%%s%s%e", prefix, test_width_len[i]), v);
+					do_test_f(&data, tmp_sprintf("%%%s%se", prefix, test_width_len[i]), v);
 				for (int i = 0; i < num_test_width_len_1; i++)
-					do_test_if(&data, tmp_sprintf("%%%s%s%e", prefix, test_width_len_1[i]), tu_rand_range(-5, 5), v);
+					do_test_if(&data, tmp_sprintf("%%%s%se", prefix, test_width_len_1[i]), tu_rand_range(-5, 5), v);
 				for (int i = 0; i < num_test_width_len_2; i++)
-					do_test_iif(&data, tmp_sprintf("%%%s%s%e", prefix, test_width_len_2[i]), tu_rand_range(-5, 5), tu_rand_range(-5, 5), v);
+					do_test_iif(&data, tmp_sprintf("%%%s%se", prefix, test_width_len_2[i]), tu_rand_range(-5, 5), tu_rand_range(-5, 5), v);
 			}
 		}
 		tu_malloc_disable();
